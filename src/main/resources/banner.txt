@@ -1,0 +1,6 @@
+  __  __ _                 _            ____   ${application.title} ${application.formatted-version}
+ |  \/  (_) __ _ _ __ __ _| |_ ___  _ _|___ \  User[${user.name}] home[${user.home}] dir[${user.dir}]
+ | |\/| | |/ _` | '__/ _` | __/ _ \| '__|__) | Spring Boot ${spring-boot.formatted-version}
+ | |  | | | (_| | | | (_| | || (_) | |  / __/  java.vendor.version:[${java.vendor.version}] tmpdir:[${java.io.tmpdir}]
+ |_|  |_|_|\__, |_|  \__,_|\__\___/|_| |_____| spring.config.location[${spring.config.location}]
+           |___/                               logging.config[${logging.config}]  java.vm.name:[${java.vm.name}]

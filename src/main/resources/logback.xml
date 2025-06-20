@@ -1,0 +1,40 @@
+<configuration scan="true" scanPeriod="15 seconds">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+<!-- 		<withJansi>true</withJansi> -->
+		<encoder>
+			<charset>UTF-8</charset>
+			<!-- <pattern>%d{HH:mm:ss.SSS} %level %logger{96} - %msg%n</pattern> -->
+			<pattern>%yellow(%d{HH:mm:ss.SSS}) %magenta([%10.10thread]) %highlight(%.-1level) %green(%logger{135}) - %msg%xEx{16}%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- [TRACE]-[DEBUG]-[INFO]-[WARN]-[ERROR] (OFF) -->
+	<logger name="org.hibernate" level="OFF"></logger>
+	<logger name="org.mybatis" level="INFO"></logger>
+	<logger name="ct.migratordesktop.importal.ImportStep" level="DEBUG"></logger>
+	<logger name="ct.migratordesktop.exportal.ExportStep" level="DEBUG"></logger>
+	<logger name="com.zaxxer.hikari.HikariConfig" level="info"></logger>
+<!-- 	<logger name="ct.migratordesktop.repositories.ecostat.EcostatRepository" level="DEBUG"></logger> --> -->
+
+<!-- 	<logger name="com.zaxxer.hikari.pool.ProxyConnection" level="ERROR"></logger> -->
+
+	<!-- [TRACE]-[DEBUG]-[INFO]-[WARN]-[ERROR] (OFF) -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT"/><!-- level="DEBUG" -->
+	</root>
+</configuration>
+<!-- <logger name="ct.akkor.domain" level="INFO"></logger> -->
+<!-- <logger name="org.mybatis" level="INFO"></logger> -->
+<!-- <logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"></logger> -->
+<!-- <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"></logger> -->
+<!-- <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"></logger> -->
+<!-- <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"></logger> -->
+<!-- <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"></logger> -->
+<!-- <logger name="org.apache.tomcat.util.scan.StandardJarScanner" level="ERROR"></logger> -->
+<!-- <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"></logger> -->
+<!-- <logger name="org.springframework.boot.actuate.endpoint.jmx" level="WARN"></logger> -->
+<!-- <logger name="com.zaxxer.hikari.pool" level="INFO"></logger> -->
+<!-- <logger name="com.zaxxer.hikari.pool.ProxyConnection" level="ERROR"></logger> -->
+<!-- <logger name="org.apache.poi" level="info"></logger> -->
+
