@@ -30,8 +30,8 @@ public class SchemaPanel extends AbstractPanel {
 		} );
 		buttonPanel.add( checkBt );
 		//
-		final var exportBt = new JButton( "execute" );
-		exportBt.addActionListener( new ActionListener() {
+		final var btn = new JButton( "execute" );
+		btn.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent event ) {
 				final var actionName = ((JButton)event.getSource()).getText();
 				final var result = JOptionPane.showInternalConfirmDialog( null, "Futtatható ?", actionName, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE );
@@ -46,7 +46,7 @@ public class SchemaPanel extends AbstractPanel {
 				}
 			}
 		} );
-		buttonPanel.add( exportBt );
+		buttonPanel.add( btn );
 
 //		final var compareBt = new JButton( "Liquibase On akkor" );
 //		compareBt.addActionListener( new ActionListener() {

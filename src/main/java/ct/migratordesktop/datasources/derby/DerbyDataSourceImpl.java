@@ -29,7 +29,7 @@ public class DerbyDataSourceImpl extends AbstractDataSource {
 
 	private JdbcTemplate jdbcTemplate;
 	
-	public List<String> getAllTableNamesFromExport() {
+	public List<String> getAllTableNamesFromDerby() {
 		List<String> ret = List.of();
 		final var sql = "SELECT tablename  FROM sys.sysschemas s, sys.systables t WHERE s.schemaid = t.schemaid AND s.SCHEMANAME = 'APP'";
 
@@ -37,7 +37,7 @@ public class DerbyDataSourceImpl extends AbstractDataSource {
 			ret = getJdbcTemplate().queryForList( sql, String.class );
 		}
 		catch ( Exception e ) {
-			log.debug( "getAllTableNamesFromExport {}", e.getMessage() );
+			log.debug( "getAllTableNamesFromDerby {}", e.getMessage() );
 		}
 		return ret;
 	}
@@ -104,7 +104,7 @@ public class DerbyDataSourceImpl extends AbstractDataSource {
 			ret = getJdbcTemplate().queryForList( sql, String.class );
 		}
 		catch ( Exception e ) {
-			log.debug( "getExportableTableNames {}", e.getMessage() );
+			log.debug( "getTableNamesFromEcostatColumns {}", e.getMessage() );
 		}
 		return ret;
 	}
@@ -114,7 +114,7 @@ public class DerbyDataSourceImpl extends AbstractDataSource {
 	protected DataSource getDataSource() {
 		return this.dataSourceConfiguration.dataSource();
 	}
-	public String exportCheck( ) {
+	public String derbyCheck( ) {
 		final var arrayDataModell = new ArrayDataModell();
 		arrayDataModell.addHeader( "schemaname", "tablename", "count" );
 		var ret = "ok";
@@ -151,7 +151,7 @@ public class DerbyDataSourceImpl extends AbstractDataSource {
 			ret = arrayDataModelFormatter.getFormatted();
 		}
 		catch ( SQLException e ) {
-			log.error( "exportCheck", e );
+			log.error( "derbyCheck", e );
 			ret = e.getMessage();
 		}
 		return ret;

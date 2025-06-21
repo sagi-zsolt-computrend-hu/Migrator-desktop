@@ -22,8 +22,8 @@ public class ImportPanel extends AbstractPanel {
 	public ImportPanel() {
 		super();
 		//
-		final var exportBt = new JButton( "Import (export->medkontroll)" );
-		exportBt.addActionListener( new ActionListener() {
+		final var btn = new JButton( "Import (Derby->medkontroll)" );
+		btn.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent event ) {
 				final var actionName = ((JButton)event.getSource()).getText();
 				final var result = JOptionPane.showInternalConfirmDialog( null, "Futtatható ?", actionName, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE );
@@ -35,7 +35,7 @@ public class ImportPanel extends AbstractPanel {
 					} ).start();
 			}
 		} );
-		buttonPanel.add( exportBt );
+		buttonPanel.add( btn );
 
 		final var compareBt = new JButton( "Compare" );
 		compareBt.addActionListener( new ActionListener() {

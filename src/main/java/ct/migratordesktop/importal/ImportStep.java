@@ -45,13 +45,12 @@ class ImportStep implements Runnable,Converters {
 			final var create = getCreateTableFromEcostatColumns(  tableName );
 			importService.getMedkontrollDataSource().execute( create.toUpperCase() );
 			if ( rowCount > 0 ) {
-				this.columnNameList = importService.getExportRepository().getColumnNameListFromEcostatColumns( tableName );
-				this.columnTypeList = importService.getExportRepository().getColumnTypeListFromEcostatColumns( tableName );
+				this.columnNameList = importService.getDerbyRepository().getColumnNameListFromEcostatColumns( tableName );
+				this.columnTypeList = importService.getDerbyRepository().getColumnTypeListFromEcostatColumns( tableName );
 				this.insertCommand = getInsertCommand( tableName );
 				log.debug( "insertCommand:{}", insertCommand );
 				final var selectHelper = new SelectHelper();
 				selectHelper.setTableName( tableName );
-				//final var columnList = importServiceImpl.getExportDataSource().getColumnNamesFromEcostatColumns( tableName );
 				selectHelper.setColumns( columnNameList.stream().collect( Collectors.joining( ",", " ", " " ) ) );
 				selectHelper.setPageSize( importService.getImportProperties().getPageSize() );
 				selectHelper.setRowCount( rowCount );
@@ -93,7 +92,7 @@ class ImportStep implements Runnable,Converters {
 
 		final var sorok = new ArrayList<String>();
 		final var maxLenTableName = 55;
-		final var ecostatColumnList = importService.getExportRepository().findAllByTableNameOrderByColumnIdAsc( tableName.toUpperCase() );
+		final var ecostatColumnList = importService.getDerbyRepository().findAllByTableNameOrderByColumnIdAsc( tableName.toUpperCase() );
 		for ( EcostatColumn columnsEntity : ecostatColumnList ) {
 			var sor = "  " + padRight( columnsEntity.getColumnName(), maxLenTableName );
 			sor += " " + columnsEntity.getDataType();

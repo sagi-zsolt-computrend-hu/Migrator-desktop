@@ -20,37 +20,17 @@ import org.springframework.core.env.Environment;
 public class DataSourcePanel extends AbstractPanel implements Converters {
 	private static final long					serialVersionUID	= 1L;
 
-	//	@Lazy
-	//	@Autowired
-	//	private ExportProperties			exportProperties;
-	//
-	//	@Lazy
-	//	@Autowired
-	//	private ExportProperties			importProperties;
-	//
-	//	
-	//	@Lazy
-	//	@Autowired
-	//	private AlapDataSourceImpl		alapDataSource;
-	//	@Lazy
-	//	@Autowired
-	//	private ExportDataSourceImpl	exportDataSource;
-	//
 	@Lazy
 	@Autowired
 	private EcoStatDataSourceImpl			ecoStatDataSource;
 
 	@Lazy
 	@Autowired
-	private DerbyDataSourceImpl			derbyDataSource;
+	private DerbyDataSourceImpl				derbyDataSource;
 
 	@Lazy
 	@Autowired
 	private MedkontrollDataSourceImpl	medkontrollDataSource;
-
-//	@Lazy
-//	@Autowired
-//	private AkkorDataSourceImpl				akkorDataSource;
 
 	@Lazy
 	@Autowired
@@ -58,21 +38,6 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 
 	public DataSourcePanel() {
 		super();
-		//		{
-		//			final var jButton = new JButton( "alap" );
-		//			jButton.addActionListener( new ActionListener() {
-		//				public void actionPerformed( ActionEvent event ) {
-		//					try {
-		//						disableButtonPanel();
-		//						//textArea.appendANSI( alapDataSource.getConnInfo() );
-		//					}
-		//					finally {
-		//						enableButtonPanel();
-		//					}
-		//				}
-		//			} );
-		//			buttonPanel.add( jButton );
-		//		}
 		{
 			final var jButton = new JButton( "Derby" );
 			jButton.addActionListener( new ActionListener() {
@@ -118,28 +83,13 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 			} );
 			buttonPanel.add( jButton );
 		}
-//		{
-//			final var jButton = new JButton( "Akkor" );
-//			jButton.addActionListener( new ActionListener() {
-//				public void actionPerformed( ActionEvent event ) {
-//					try {
-//						disableButtonPanel();
-//						textArea.appendANSI( akkorDataSource.getDataSourceInfo() );
-//					}
-//					finally {
-//						enableButtonPanel();
-//					}
-//				}
-//			} );
-//			buttonPanel.add( jButton );
-//		}
 		{
 			final var jButton = new JButton( "Check Derby" );
 			jButton.addActionListener( new ActionListener() {
 				public void actionPerformed( ActionEvent event ) {
 					try {
 						disableButtonPanel();
-						textArea.appendANSI( derbyDataSource.exportCheck() );
+						textArea.appendANSI( derbyDataSource.derbyCheck() );
 					}
 					finally {
 						enableButtonPanel();
@@ -158,30 +108,6 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 					finally {
 						enableButtonPanel();
 					}
-
-				}
-			} );
-			buttonPanel.add( jButton );
-		}
-		{
-			final var jButton = new JButton( "alap Exec Sql" );
-			jButton.addActionListener( new ActionListener() {
-				public void actionPerformed( ActionEvent event ) {
-					final var actionName = ((JButton)event.getSource()).getText();
-					new Thread( () -> {
-						try {
-							var commands = textArea.getText().split( ";" );
-							start( actionName );
-							for ( int i = 0; i < commands.length; i++ ) {
-								var command = commands[i];
-								log.info( "Executing {}", command );
-								//alapDataSource.execute( command );
-							}
-						}
-						finally {
-							stop();
-						}
-					} ).start();
 				}
 			} );
 			buttonPanel.add( jButton );
@@ -198,8 +124,6 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 		ret += "  logging.config        : " + System.getProperty( "logging.config" ) + "\n";
 		ret += "  java.io.tmpdir        : " + System.getProperty( "java.io.tmpdir" ) + "\n";
 
-		//		ret += exportProperties.toString() + "\n";
-		//		ret += importProperties.toString() + "\n";
 		return ret;
 	}
 
@@ -208,3 +132,41 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 		""";//@formatter:on
 	}
 }
+//		{
+//			final var jButton = new JButton( "alap Exec Sql" );
+//			jButton.addActionListener( new ActionListener() {
+//				public void actionPerformed( ActionEvent event ) {
+//					final var actionName = ((JButton)event.getSource()).getText();
+//					new Thread( () -> {
+//						try {
+//							var commands = textArea.getText().split( ";" );
+//							start( actionName );
+//							for ( int i = 0; i < commands.length; i++ ) {
+//								var command = commands[i];
+//								log.info( "Executing {}", command );
+//								//alapDataSource.execute( command );
+//							}
+//						}
+//						finally {
+//							stop();
+//						}
+//					} ).start();
+//				}
+//			} );
+//			buttonPanel.add( jButton );
+//		}
+//		{
+//			final var jButton = new JButton( "Akkor" );
+//			jButton.addActionListener( new ActionListener() {
+//				public void actionPerformed( ActionEvent event ) {
+//					try {
+//						disableButtonPanel();
+//						textArea.appendANSI( akkorDataSource.getDataSourceInfo() );
+//					}
+//					finally {
+//						enableButtonPanel();
+//					}
+//				}
+//			} );
+//			buttonPanel.add( jButton );
+//		}

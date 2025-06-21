@@ -29,16 +29,10 @@ public class TesztDataServiceImpl implements Converters {
 	@Autowired
 	public TesztDataProperties		tesztDataProperties;
 
-	public void generateExport() {
+	public void generateDerby() {
 		generate( derbyDataSourceImpl );
 	}
 
-//	@SneakyThrows
-//	public void generateAkkor() {
-//		generate( akorDataSourceImpl );
-//
-//	}
-	
 	public void generateMedkontroll() {
 		generate( medKontrollDataSourceImpl );
 	}

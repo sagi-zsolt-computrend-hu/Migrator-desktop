@@ -9,10 +9,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import ct.migratordesktop.datasources.DataSourcePanel;
-import ct.migratordesktop.exportal.ExportPanel;
 import ct.migratordesktop.importal.ImportPanel;
 import ct.migratordesktop.schema.SchemaPanel;
 import ct.migratordesktop.tesztdata.TesztDataPanel;
+import ct.migratordesktop.toderby.DerbyPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
@@ -25,7 +25,7 @@ public class MigratorJframe extends JFrame implements CommandLineRunner, Ordered
 	private DataSourcePanel		dataSourcePanel;
 
 	@Autowired
-	private ExportPanel				exportPanel;
+	private DerbyPanel				derbyPanel;
 
 	@Autowired
 	private ImportPanel				importPanel;
@@ -69,11 +69,11 @@ public class MigratorJframe extends JFrame implements CommandLineRunner, Ordered
 			jMenuBar.add( mi );
 		}
 		{
-			var mi = new JMenuItem( "Export" );
+			var mi = new JMenuItem( "Derby" );
 			mi.addActionListener(
 				new ActionListener() {
 					public void actionPerformed( ActionEvent event ) {
-						setContentPane( exportPanel );
+						setContentPane( derbyPanel );
 						dataSourcePanel.revalidate();
 						revalidate();
 					}

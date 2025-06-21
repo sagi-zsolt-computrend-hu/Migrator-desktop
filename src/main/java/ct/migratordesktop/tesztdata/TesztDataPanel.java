@@ -44,7 +44,7 @@ public class TesztDataPanel extends AbstractPanel implements Converters {
 					final var actionName = ((JButton)event.getSource()).getText();
 					start( actionName );
 					new Thread( () -> {
-						tesztDataService.generateExport();
+						tesztDataService.generateDerby();
 						stop();
 					} ).start();
 				}

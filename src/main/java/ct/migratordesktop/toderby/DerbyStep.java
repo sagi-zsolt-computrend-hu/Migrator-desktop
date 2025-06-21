@@ -1,4 +1,4 @@
-package ct.migratordesktop.exportal;
+package ct.migratordesktop.toderby;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,14 +16,14 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j(topic = "ExportStep")
-class ExportStep implements Runnable, Converters {
-	public ExportStep( ExportServiceImpl exportServiceImpl ) {
+@Slf4j(topic = "DerbyStep")
+class DerbyStep implements Runnable, Converters {
+	public DerbyStep( DerbyServiceImpl derbyService ) {
 		super();
-		this.exportService = exportServiceImpl;
+		this.derbyService = derbyService;
 	}
 
-	private ExportServiceImpl	exportService;
+	private DerbyServiceImpl	derbyService;
 	@Setter()
 	private String						tableName;
 	private AtomicInteger			exported;
@@ -43,32 +43,32 @@ class ExportStep implements Runnable, Converters {
 		exported = new AtomicInteger();
 		selectList = List.of();
 		try {
-			rowCount = exportService.getEcoStatDataSource().getCount( tableName );
+			rowCount = derbyService.getEcoStatDataSource().getCount( tableName );
 			log.info( "start {} rowCount:{}", tableName, rowCount );
 			final var create = /*exportServiceImpl.getExportDataSource().*/getCreateTableFromEcostatColumns( tableName );
 
-			exportService.getExportDataSource().execute( create.toUpperCase() );
+			derbyService.getDerbyDataSource().execute( create.toUpperCase() );
 			if ( rowCount > 0 ) {
-				this.columnNameList = exportService.getExportRepository().getColumnNameListFromEcostatColumns( tableName );
-				this.columnTypeList = exportService.getExportRepository().getColumnTypeListFromEcostatColumns( tableName );
+				this.columnNameList = derbyService.getDerbyRepository().getColumnNameListFromEcostatColumns( tableName );
+				this.columnTypeList = derbyService.getDerbyRepository().getColumnTypeListFromEcostatColumns( tableName );
 				this.insertCommand = getInsertCommand( tableName  );
 				log.debug( "insertCommand:{}", insertCommand );
 				final var selectHelper = new SelectHelper();
 				selectHelper.setTableName( tableName );
-				final var columnList = exportService.getExportRepository().getColumnNameListFromEcostatColumns( tableName );
+				final var columnList = derbyService.getDerbyRepository().getColumnNameListFromEcostatColumns( tableName );
 				selectHelper.setColumns( columnList.stream().collect( Collectors.joining( ",", " ", " " ) ) );
-				selectHelper.setPageSize( exportService.getExportProperties().getPageSize() );
+				selectHelper.setPageSize( derbyService.getDerbyProperties().getPageSize() );
 				selectHelper.setRowCount( rowCount );
 				selectList = selectHelper.getSelectList();
-				try (final var connRead = exportService.getEcoStatDataSource().getConnection();
-					final var connWrite = exportService.getExportDataSource().getConnection();) {
+				try (final var connRead = derbyService.getEcoStatDataSource().getConnection();
+					final var connWrite = derbyService.getDerbyDataSource().getConnection();) {
 					connRead.setReadOnly( true );
 					connWrite.setAutoCommit( false );
 					for ( int i = 0; i < selectList.size(); i++ ) {
 						final var sqlSelect = selectList.get( i );
 						try (final var st = connRead.prepareStatement( sqlSelect, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY )) {
-							st.setMaxRows( Math.min( exportService.getExportProperties().getPageSize(), rowCount ) );
-							st.setFetchSize( Math.min( exportService.getExportProperties().getPageSize(), rowCount ) );
+							st.setMaxRows( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
+							st.setFetchSize( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
 							try (final var rs = st.executeQuery();) {
 								writeResultSet( connWrite, rs );
 							}
@@ -81,7 +81,7 @@ class ExportStep implements Runnable, Converters {
 			log.error( "export", e );
 		}
 		finally {
-			log.info( "stop  {} rowCount:{} Time:{} Pages:{}", tableName, exportService.getExportDataSource().getCount( tableName ), stopper.getTime(), selectList.size() );
+			log.info( "stop  {} rowCount:{} Time:{} Pages:{}", tableName, derbyService.getDerbyDataSource().getCount( tableName ), stopper.getTime(), selectList.size() );
 		}
 	}
 
@@ -118,7 +118,7 @@ class ExportStep implements Runnable, Converters {
 	private String getCreateTableFromEcostatColumns( String tableName ) {
 		final var sorok = new ArrayList<String>();
 		final var maxLenTableName = 55;
-		final var ecostatColumnList = exportService.getExportRepository().findAllByTableNameOrderByColumnIdAsc( tableName.toUpperCase() );
+		final var ecostatColumnList = derbyService.getDerbyRepository().findAllByTableNameOrderByColumnIdAsc( tableName.toUpperCase() );
 		ecostatColumnList.add( 0, getIdExport() );
 		for ( EcostatColumn ecostatColumn : ecostatColumnList ) {
 			convertToDerby( ecostatColumn );

@@ -21,7 +21,7 @@ public class ImportServiceImpl {
 	@Lazy
 	@Autowired
 	@Getter
-	private DerbyRepository			exportRepository;
+	private DerbyRepository			derbyRepository;
 	@Lazy
 	@Getter
 	@Autowired
@@ -54,10 +54,10 @@ public class ImportServiceImpl {
 			executor.awaitTermination( 100, TimeUnit.HOURS );
 		}
 		catch ( Exception e ) {
-			log.error( "export", e );
+			log.error( "importal", e );
 		}
 		finally {
-			log.info( "Export stop tablesCount:{} Time:{}", tableNameList.size(), stopper.getTime() );
+			log.info( "importal stop tablesCount:{} Time:{}", tableNameList.size(), stopper.getTime() );
 		}
 
 	}

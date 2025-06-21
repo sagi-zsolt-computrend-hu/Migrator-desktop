@@ -1,4 +1,4 @@
-package ct.migratordesktop.exportal;
+package ct.migratordesktop.toderby;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,16 +13,16 @@ import org.springframework.context.annotation.Lazy;
 
 @Slf4j
 @org.springframework.stereotype.Component
-public class ExportPanel extends AbstractPanel {
+public class DerbyPanel extends AbstractPanel {
 	private static final long	serialVersionUID	= 1L;
 	@Lazy
 	@Autowired
-	private ExportServiceImpl	exportService;
+	private DerbyServiceImpl	derbyService;
 
-	public ExportPanel() {
+	public DerbyPanel() {
 		super();
 		//
-		final var exportBt = new JButton( "Export  (Ecostat -> Export)" );
+		final var exportBt = new JButton( "Derby  (Ecostat -> Derby)" );
 		exportBt.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent event ) {
 				final var actionName = ((JButton)event.getSource()).getText();
@@ -30,7 +30,7 @@ public class ExportPanel extends AbstractPanel {
 				if ( result == JOptionPane.YES_OPTION )
 					new Thread( () -> {
 						start( actionName );
-						exportService.exportal();
+						derbyService.toDerby();
 						stop();
 					} ).start();
 			}
@@ -43,7 +43,7 @@ public class ExportPanel extends AbstractPanel {
 				final var actionName = ((JButton)event.getSource()).getText();
 				new Thread( () -> {
 					start( actionName );
-					exportService.compare();
+					derbyService.compare();
 					stop();
 				} ).start();
 			}
