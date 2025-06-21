@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import ct.migratordesktop.datasources.export.ExportDataSourceImpl;
+import ct.migratordesktop.datasources.derby.DerbyDataSourceImpl;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceImpl;
-import ct.migratordesktop.repositories.export.ExportRepository;
+import ct.migratordesktop.repositories.derby.DerbyRepository;
 import ct.migratordesktop.util.Stopper;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -21,7 +21,7 @@ public class ImportServiceImpl {
 	@Lazy
 	@Autowired
 	@Getter
-	private ExportRepository			exportRepository;
+	private DerbyRepository			exportRepository;
 	@Lazy
 	@Getter
 	@Autowired
@@ -29,7 +29,7 @@ public class ImportServiceImpl {
 	@Lazy
 	@Autowired
 	@Getter
-	private ExportDataSourceImpl	exportDataSource;
+	private DerbyDataSourceImpl	derbyDataSource;
 	@Lazy
 	@Getter
 	@Autowired
@@ -40,7 +40,7 @@ public class ImportServiceImpl {
 		final var stopper = new Stopper().start();
 		try {
 			log.info( "Import start Properties:{}", importProperties );
-			tableNameList = exportDataSource.getTableNamesFromEcostatColumns();
+			tableNameList = derbyDataSource.getTableNamesFromEcostatColumns();
 			log.debug( "Drop tables: {} {}", tableNameList.size(), tableNameList );
 			tableNameList.forEach( tableName -> 	medkontrollDataSource.dropTable( tableName ) );
 			log.debug( "importing tables:{}", tableNameList );
@@ -64,7 +64,7 @@ public class ImportServiceImpl {
 
 	@SneakyThrows
 	public void compare() {
-		final var tableNameList = exportDataSource.getTableNamesFromEcostatColumns();
+		final var tableNameList = derbyDataSource.getTableNamesFromEcostatColumns();
 		final var stopper = new Stopper().start();
 		try {
 			log.info( "Import Compare start TableCount:{} Properties:{}", tableNameList.size(), importProperties );

@@ -9,8 +9,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariDataSource;
+import ct.migratordesktop.datasources.derby.DerbyDataSourceConfiguration;
 import ct.migratordesktop.datasources.ecostat.EcostatDataSourceConfiguration;
-import ct.migratordesktop.datasources.export.ExportDataSourceConfiguration;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceConfiguration;
 import ct.migratordesktop.util.ArrayDataModelFormatter;
 import ct.migratordesktop.util.ArrayDataModell;
@@ -35,7 +35,7 @@ public class Runner implements CommandLineRunner {
 //	EcostatColumnsRepository						ecostatColumnsRepository;
 //
 	@Autowired
-	ExportDataSourceConfiguration				exportDataSourceConfiguration;
+	DerbyDataSourceConfiguration				derbyDataSourceConfiguration;
 
 	@Autowired
 	EcostatDataSourceConfiguration			ecostatDataSourceConfiguration;
@@ -170,7 +170,7 @@ public class Runner implements CommandLineRunner {
 	}
 
 	private void xxx( Object... params ) {//new Object[]{"MK%"}
-		var jdbctExport = new JdbcTemplate(exportDataSourceConfiguration.dataSource());
+		var jdbctExport = new JdbcTemplate(derbyDataSourceConfiguration.dataSource());
 		var selectModell = new SelectModell(jdbctExport, "select * from ecostat_colums where table_name like ?" )
 			.select( params );
 		

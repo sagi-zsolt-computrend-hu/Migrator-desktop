@@ -1,12 +1,10 @@
 package ct.migratordesktop.datasources.medkontroll;
 
-import java.sql.Connection;
 import java.util.Objects;
 
 import javax.sql.DataSource;
 
 import ct.migratordesktop.datasources.AbstractDataSource;
-import ct.migratordesktop.datasources.export.ExportDataSourceConfiguration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

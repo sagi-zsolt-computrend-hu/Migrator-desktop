@@ -1,4 +1,4 @@
-package ct.migratordesktop.repositories.export;
+package ct.migratordesktop.repositories.derby;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
-public interface ExportRepository {
+public interface DerbyRepository {
 	@Select(value = "SELECT * FROM APP.ECOSTAT_COLUMS")
 	@Results({
 		@Result(property = "id", column = "ID"),

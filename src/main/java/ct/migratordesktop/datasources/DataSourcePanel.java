@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import ct.migratordesktop.datasources.derby.DerbyDataSourceImpl;
 import ct.migratordesktop.datasources.ecostat.EcoStatDataSourceImpl;
-import ct.migratordesktop.datasources.export.ExportDataSourceImpl;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceImpl;
 import ct.migratordesktop.swing.AbstractPanel;
 import ct.migratordesktop.util.Converters;
@@ -42,7 +42,7 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 
 	@Lazy
 	@Autowired
-	private ExportDataSourceImpl			exportDataSource;
+	private DerbyDataSourceImpl			derbyDataSource;
 
 	@Lazy
 	@Autowired
@@ -74,12 +74,12 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 		//			buttonPanel.add( jButton );
 		//		}
 		{
-			final var jButton = new JButton( "Export (Derby)" );
+			final var jButton = new JButton( "Derby" );
 			jButton.addActionListener( new ActionListener() {
 
 				public void actionPerformed( ActionEvent event ) {
 					try {
-						textArea.appendANSI( exportDataSource.getDataSourceInfo() );
+						textArea.appendANSI( derbyDataSource.getDataSourceInfo() );
 					}
 					finally {
 						enableButtonPanel();
@@ -139,7 +139,7 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 				public void actionPerformed( ActionEvent event ) {
 					try {
 						disableButtonPanel();
-						textArea.appendANSI( exportDataSource.exportCheck() );
+						textArea.appendANSI( derbyDataSource.exportCheck() );
 					}
 					finally {
 						enableButtonPanel();

@@ -1,4 +1,4 @@
-package ct.migratordesktop.datasources.export;
+package ct.migratordesktop.datasources.derby;
 
 import javax.sql.DataSource;
 
@@ -14,21 +14,21 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @MapperScan(
-	basePackages = {"**.repositories.export"},
-	sqlSessionFactoryRef = "exportSqlSessionFactory")
-public class ExportDataSourceConfiguration {
-	public static final String PREFIX = "spring.datasource.export";
+	basePackages = {"**.repositories.derby"},
+	sqlSessionFactoryRef = "derbySqlSessionFactory")
+public class DerbyDataSourceConfiguration {
+	public static final String PREFIX = "spring.datasource.derby";
 
-	@Bean("exportDataSource")
+	@Bean("derbyDataSource")
 	@ConfigurationProperties(prefix = PREFIX)
 	public /*Hikari*/DataSource dataSource() {
 		return DataSourceBuilder.create().build();
 		//return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 
-	@Bean("exportSqlSessionFactory")
+	@Bean("derbySqlSessionFactory")
 	public SqlSessionFactory sqlSessionFactory(
-		@Autowired @Qualifier("exportDataSource") DataSource dataSource ) throws Exception {
+		@Autowired @Qualifier("derbyDataSource") DataSource dataSource ) throws Exception {
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
 		sessionFactory.setDataSource( dataSource );
 		return sessionFactory.getObject();

@@ -37,7 +37,7 @@ public class TesztDataPanel extends AbstractPanel implements Converters {
 //			buttonPanel.add( jButton );
 //		}
 		{
-			final var jButton = new JButton( "export(Derby)" );
+			final var jButton = new JButton( "Derby" );
 			jButton.addActionListener( new ActionListener() {
 				@SneakyThrows
 				public void actionPerformed( ActionEvent event ) {

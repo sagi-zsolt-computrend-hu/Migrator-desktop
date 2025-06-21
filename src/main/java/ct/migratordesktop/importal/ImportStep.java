@@ -40,7 +40,7 @@ class ImportStep implements Runnable,Converters {
 		stopper = new Stopper().start();
 		this.imported = new AtomicInteger( 0 );
 		try {
-			rowCount = importService.getExportDataSource().getCount( tableName );
+			rowCount = importService.getDerbyDataSource().getCount( tableName );
 			log.info( "start {} rowCount:{}", tableName, rowCount );
 			final var create = getCreateTableFromEcostatColumns(  tableName );
 			importService.getMedkontrollDataSource().execute( create.toUpperCase() );
@@ -56,7 +56,7 @@ class ImportStep implements Runnable,Converters {
 				selectHelper.setPageSize( importService.getImportProperties().getPageSize() );
 				selectHelper.setRowCount( rowCount );
 				selectList = selectHelper.getSelectList();
-				try (final var connRead = importService.getExportDataSource().getConnection();
+				try (final var connRead = importService.getDerbyDataSource().getConnection();
 					final var connWrite = importService.getMedkontrollDataSource().getConnection();) {
 					connWrite.setAutoCommit( false );
 					connRead.setReadOnly( true );

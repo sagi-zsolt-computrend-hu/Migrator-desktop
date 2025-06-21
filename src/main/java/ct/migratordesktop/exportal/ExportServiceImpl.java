@@ -10,12 +10,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ct.migratordesktop.datasources.derby.DerbyDataSourceImpl;
 import ct.migratordesktop.datasources.ecostat.EcoStatDataSourceImpl;
-import ct.migratordesktop.datasources.export.ExportDataSourceImpl;
 import ct.migratordesktop.models.EcostatColumn;
 import ct.migratordesktop.models.PrimaryKey;
+import ct.migratordesktop.repositories.derby.DerbyRepository;
 import ct.migratordesktop.repositories.ecostat.EcostatRepository;
-import ct.migratordesktop.repositories.export.ExportRepository;
 import ct.migratordesktop.util.Stopper;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -33,7 +33,7 @@ class ExportServiceImpl {
 	@Lazy
 	@Autowired
 	@Getter
-	private ExportDataSourceImpl	exportDataSource;
+	private DerbyDataSourceImpl	exportDataSource;
 	@Getter
 	@Autowired
 	private EcoStatDataSourceImpl	ecoStatDataSource;
@@ -42,11 +42,11 @@ class ExportServiceImpl {
 
 	@Autowired
 	@Getter
-	private ExportRepository			exportRepository;
+	private DerbyRepository			exportRepository;
 
 	private List<String>					tableNameList	= List.of();
 	@Autowired
-	ExportRepository							ecostatColumnsRepository;
+	DerbyRepository							ecostatColumnsRepository;
 
 	public void exportal() {
 		final var stopper = new Stopper().start();

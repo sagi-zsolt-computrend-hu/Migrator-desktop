@@ -1,4 +1,4 @@
-package ct.migratordesktop.datasources.export;
+package ct.migratordesktop.datasources.derby;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,11 +21,11 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ExportDataSourceImpl extends AbstractDataSource {
+public class DerbyDataSourceImpl extends AbstractDataSource {
 
 	@Autowired
 	@Getter
-	private ExportDataSourceConfiguration dataSourceConfiguration;
+	private DerbyDataSourceConfiguration dataSourceConfiguration;
 
 	private JdbcTemplate jdbcTemplate;
 	
@@ -95,7 +95,7 @@ public class ExportDataSourceImpl extends AbstractDataSource {
 
 	@Override
 	public String getDataSourceInfo() {
-		return getDataSourceInfo(dataSourceConfiguration.dataSource(),ExportDataSourceConfiguration.PREFIX);
+		return getDataSourceInfo(dataSourceConfiguration.dataSource(),DerbyDataSourceConfiguration.PREFIX);
 	}
 	public List<String> getTableNamesFromEcostatColumns() {
 		List<String> ret = List.of();

@@ -4,7 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import ct.migratordesktop.datasources.AbstractDataSource;
-import ct.migratordesktop.datasources.export.ExportDataSourceImpl;
+import ct.migratordesktop.datasources.derby.DerbyDataSourceImpl;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceImpl;
 import ct.migratordesktop.util.Converters;
 import lombok.SneakyThrows;
@@ -21,7 +21,7 @@ public class TesztDataServiceImpl implements Converters {
 //	private AkkorDataSourceImpl		akorDataSourceImpl;
 	@Lazy
 	@Autowired
-	private ExportDataSourceImpl	exportDataSourceImpl;
+	private DerbyDataSourceImpl	derbyDataSourceImpl;
 	@Lazy
 	@Autowired
 	private MedkontrollDataSourceImpl		medKontrollDataSourceImpl;
@@ -30,7 +30,7 @@ public class TesztDataServiceImpl implements Converters {
 	public TesztDataProperties		tesztDataProperties;
 
 	public void generateExport() {
-		generate( exportDataSourceImpl );
+		generate( derbyDataSourceImpl );
 	}
 
 //	@SneakyThrows
