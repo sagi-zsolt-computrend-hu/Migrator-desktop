@@ -6,18 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import ct.migratordesktop.datasources.akkor.AkkorDataSourceImpl;
 import ct.migratordesktop.swing.AbstractPanel;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @org.springframework.stereotype.Component
 public class SchemaPanel extends AbstractPanel {
 	private static final long		serialVersionUID	= 1L;
-	@Autowired
-	private AkkorDataSourceImpl	akkorDataSource;
+//	@Autowired
+//	private AkkorDataSourceImpl	akkorDataSource;
 
 	public SchemaPanel() {
 		super();

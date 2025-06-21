@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j(topic = "ExportStep")
 class ExportStep implements Runnable, Converters {
 	public ExportStep( ExportServiceImpl exportServiceImpl ) {
 		super();

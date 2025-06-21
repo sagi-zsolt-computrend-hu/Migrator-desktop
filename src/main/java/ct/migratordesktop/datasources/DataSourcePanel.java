@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import ct.migratordesktop.datasources.akkor.AkkorDataSourceImpl;
 import ct.migratordesktop.datasources.ecostat.EcoStatDataSourceImpl;
 import ct.migratordesktop.datasources.export.ExportDataSourceImpl;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceImpl;
@@ -49,9 +48,9 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 	@Autowired
 	private MedkontrollDataSourceImpl	medkontrollDataSource;
 
-	@Lazy
-	@Autowired
-	private AkkorDataSourceImpl				akkorDataSource;
+//	@Lazy
+//	@Autowired
+//	private AkkorDataSourceImpl				akkorDataSource;
 
 	@Lazy
 	@Autowired
@@ -75,7 +74,7 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 		//			buttonPanel.add( jButton );
 		//		}
 		{
-			final var jButton = new JButton( "Export" );
+			final var jButton = new JButton( "Export (Derby)" );
 			jButton.addActionListener( new ActionListener() {
 
 				public void actionPerformed( ActionEvent event ) {
@@ -90,7 +89,7 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 			buttonPanel.add( jButton );
 		}
 		{
-			final var jButton = new JButton( "Ecostat" );
+			final var jButton = new JButton( "Ecostat (Readonly)" );
 			jButton.addActionListener( new ActionListener() {
 				public void actionPerformed( ActionEvent event ) {
 					try {
@@ -105,7 +104,7 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 			buttonPanel.add( jButton );
 		}
 		{
-			final var jButton = new JButton( "Medkontroll" );
+			final var jButton = new JButton( "Medkontroll (Oracle)" );
 			jButton.addActionListener( new ActionListener() {
 				public void actionPerformed( ActionEvent event ) {
 					try {
@@ -119,21 +118,21 @@ public class DataSourcePanel extends AbstractPanel implements Converters {
 			} );
 			buttonPanel.add( jButton );
 		}
-		{
-			final var jButton = new JButton( "Akkor" );
-			jButton.addActionListener( new ActionListener() {
-				public void actionPerformed( ActionEvent event ) {
-					try {
-						disableButtonPanel();
-						textArea.appendANSI( akkorDataSource.getDataSourceInfo() );
-					}
-					finally {
-						enableButtonPanel();
-					}
-				}
-			} );
-			buttonPanel.add( jButton );
-		}
+//		{
+//			final var jButton = new JButton( "Akkor" );
+//			jButton.addActionListener( new ActionListener() {
+//				public void actionPerformed( ActionEvent event ) {
+//					try {
+//						disableButtonPanel();
+//						textArea.appendANSI( akkorDataSource.getDataSourceInfo() );
+//					}
+//					finally {
+//						enableButtonPanel();
+//					}
+//				}
+//			} );
+//			buttonPanel.add( jButton );
+//		}
 		{
 			final var jButton = new JButton( "Check Derby" );
 			jButton.addActionListener( new ActionListener() {

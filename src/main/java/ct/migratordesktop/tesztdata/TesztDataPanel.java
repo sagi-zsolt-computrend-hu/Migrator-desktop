@@ -22,22 +22,22 @@ public class TesztDataPanel extends AbstractPanel implements Converters {
 
 	public TesztDataPanel() {
 		super();
+//		{
+//			final var jButton = new JButton( "Akkor" );
+//			jButton.addActionListener( new ActionListener() {
+//				public void actionPerformed( ActionEvent event ) {
+//					final var actionName = ((JButton)event.getSource()).getText();
+//					start( actionName );
+//					new Thread( () -> {
+//						tesztDataService.generateAkkor();
+//						stop();
+//					} ).start();
+//				}
+//			} );
+//			buttonPanel.add( jButton );
+//		}
 		{
-			final var jButton = new JButton( "Akkor" );
-			jButton.addActionListener( new ActionListener() {
-				public void actionPerformed( ActionEvent event ) {
-					final var actionName = ((JButton)event.getSource()).getText();
-					start( actionName );
-					new Thread( () -> {
-						tesztDataService.generateAkkor();
-						stop();
-					} ).start();
-				}
-			} );
-			buttonPanel.add( jButton );
-		}
-		{
-			final var jButton = new JButton( "export" );
+			final var jButton = new JButton( "export(Derby)" );
 			jButton.addActionListener( new ActionListener() {
 				@SneakyThrows
 				public void actionPerformed( ActionEvent event ) {
@@ -52,7 +52,7 @@ public class TesztDataPanel extends AbstractPanel implements Converters {
 			buttonPanel.add( jButton );
 		}
 		{
-			final var jButton = new JButton( "medkontroll" );
+			final var jButton = new JButton( "medkontroll(Oracle)" );
 			jButton.addActionListener( new ActionListener() {
 				@SneakyThrows
 				public void actionPerformed( ActionEvent event ) {

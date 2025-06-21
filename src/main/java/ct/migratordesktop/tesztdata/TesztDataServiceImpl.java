@@ -4,7 +4,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import ct.migratordesktop.datasources.AbstractDataSource;
-import ct.migratordesktop.datasources.akkor.AkkorDataSourceImpl;
 import ct.migratordesktop.datasources.export.ExportDataSourceImpl;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceImpl;
 import ct.migratordesktop.util.Converters;
@@ -17,9 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class TesztDataServiceImpl implements Converters {
-	@Lazy
-	@Autowired
-	private AkkorDataSourceImpl		akorDataSourceImpl;
+//	@Lazy
+//	@Autowired
+//	private AkkorDataSourceImpl		akorDataSourceImpl;
 	@Lazy
 	@Autowired
 	private ExportDataSourceImpl	exportDataSourceImpl;
@@ -34,11 +33,11 @@ public class TesztDataServiceImpl implements Converters {
 		generate( exportDataSourceImpl );
 	}
 
-	@SneakyThrows
-	public void generateAkkor() {
-		generate( akorDataSourceImpl );
-
-	}
+//	@SneakyThrows
+//	public void generateAkkor() {
+//		generate( akorDataSourceImpl );
+//
+//	}
 	
 	public void generateMedkontroll() {
 		generate( medKontrollDataSourceImpl );

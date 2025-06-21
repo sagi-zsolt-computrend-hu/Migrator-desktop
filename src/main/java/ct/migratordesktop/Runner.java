@@ -9,7 +9,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariDataSource;
-import ct.migratordesktop.datasources.akkor.AkkorDataSourceConfiguration;
 import ct.migratordesktop.datasources.ecostat.EcostatDataSourceConfiguration;
 import ct.migratordesktop.datasources.export.ExportDataSourceConfiguration;
 import ct.migratordesktop.datasources.medkontroll.MedkontrollDataSourceConfiguration;
@@ -44,8 +43,8 @@ public class Runner implements CommandLineRunner {
 	@Autowired
 	MedkontrollDataSourceConfiguration	medkontrollDataSourceConfiguration;
 
-	@Autowired
-	AkkorDataSourceConfiguration				akkorDataSourceConfiguration;
+//	@Autowired
+//	AkkorDataSourceConfiguration				akkorDataSourceConfiguration;
 
 	
 	//@Autowired FelhasznaloService felhasznaloService;

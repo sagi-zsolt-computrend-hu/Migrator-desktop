@@ -3,7 +3,7 @@ package ct.migratordesktop.exportal;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j(topic = "CompareStep")
 class CompareStep implements Runnable {
 	public CompareStep( ExportServiceImpl exportServiceImpl ) {
 		super();

@@ -18,7 +18,7 @@ import ct.migratordesktop.util.Converters;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j(topic = "TesztDataStep")
 public class TesztDataStep implements Converters, Runnable {
 	private AbstractDataSource dataSource;
 
