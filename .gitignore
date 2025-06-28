@@ -40,3 +40,4 @@ build/
 
 ### DBeaver ###
 .dbeaver
+/derby.log
