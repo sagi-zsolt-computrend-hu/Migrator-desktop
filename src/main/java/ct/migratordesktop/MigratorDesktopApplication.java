@@ -15,7 +15,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "ct.migratordesktop","ct.akkor"})
+@ComponentScan(basePackages = { "ct"})
 public class MigratorDesktopApplication {
 	private static final String _CONFIG_LOCATION = "migrator.config.location";
 

@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import ct.migratordesktop.datasources.DataSourcePanel;
+import ct.migratordesktop.export.ExportPanel;
 import ct.migratordesktop.importal.ImportPanel;
 import ct.migratordesktop.schema.SchemaPanel;
 import ct.migratordesktop.tesztdata.TesztDataPanel;
@@ -33,6 +34,11 @@ public class MigratorJframe extends JFrame implements CommandLineRunner, Ordered
 	@Autowired
 	private TesztDataPanel		tesztDataPanel;
 
+	@Autowired
+	private ExportPanel		exportPanel;
+
+
+	
 	@Autowired
 	private SchemaPanel		schemaPanel;
 
@@ -111,6 +117,18 @@ public class MigratorJframe extends JFrame implements CommandLineRunner, Ordered
 					public void actionPerformed( ActionEvent event ) {
 						setContentPane( schemaPanel );
 						schemaPanel.revalidate();
+						revalidate();
+					}
+				} );
+			jMenuBar.add( mi );
+		}
+		{
+			var mi = new JMenuItem( "Export" );
+			mi.addActionListener(
+				new ActionListener() {
+					public void actionPerformed( ActionEvent event ) {
+						setContentPane( exportPanel );
+						exportPanel.revalidate();
 						revalidate();
 					}
 				} );

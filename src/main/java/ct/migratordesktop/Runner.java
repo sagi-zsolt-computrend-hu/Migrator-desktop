@@ -1,5 +1,9 @@
 package ct.migratordesktop;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.JdbcAccessor;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 //@Component
@@ -31,9 +36,9 @@ public class Runner implements CommandLineRunner {
 	//	@Autowired
 	//	ArchiveRepository								archiveRepository;
 
-//	@Autowired
-//	EcostatColumnsRepository						ecostatColumnsRepository;
-//
+	//	@Autowired
+	//	EcostatColumnsRepository						ecostatColumnsRepository;
+	//
 	@Autowired
 	DerbyDataSourceConfiguration				derbyDataSourceConfiguration;
 
@@ -43,16 +48,14 @@ public class Runner implements CommandLineRunner {
 	@Autowired
 	MedkontrollDataSourceConfiguration	medkontrollDataSourceConfiguration;
 
-//	@Autowired
-//	AkkorDataSourceConfiguration				akkorDataSourceConfiguration;
+	//	@Autowired
+	//	AkkorDataSourceConfiguration				akkorDataSourceConfiguration;
 
-	
 	//@Autowired FelhasznaloService felhasznaloService;
-	
-//@Autowired
-//private IntezmenyService intezmenyService;
-	
-	
+
+	//@Autowired
+	//private IntezmenyService intezmenyService;
+
 	//	@Autowired
 	//  JdbcTemplate jdbcTemplate;
 	//
@@ -65,76 +68,75 @@ public class Runner implements CommandLineRunner {
 
 	@Override
 	public void run( String... args ) throws Exception {
-		
 
-//		var f1 = new SaveFelhasznaloRequest();
-//		f1.setFelhasznalonev( "lkjélkjéklj" );
-//		f1.setBeosztas( "asdasdasd" );
-//		f1.setErvenyessegKezdete(LocalDateTime.now());
-//		f1.setEmail( "íyÍY@ggh.hu" );
-//		f1.setTelefonszam( "9878979" );
-//		f1.setNev( "++++12" );
-//		felhasznaloService.saveFelhasznalo( f1, 2L );
-//		
-		
-//	var fi = new IntezmenyListaRequest();
-//	//fi.getMainFilter().setIranyitoszam( new FilterIntegerValue( 6500 ) );
-//	fi.setPaginatorEnabled( false );
-//	fi.setOrder( new IntezmenyListaOrder() );
-//	var lr = intezmenyService.findByFilter( fi  );
-//	System.out.println( "Intezmeny" + lr.getRowCount() );
-////	lr.getListElements().forEach(System.out::println);
-//	//
-//	var xx = new SaveIntezmenyRequestDTO();
-//	//
-//	var jdbctAkkor = new JdbcTemplate(akkorDataSourceConfiguration.dataSource());
-//	//
-//	var dokuTarLis= jdbctAkkor.queryForList( "select id from doku_tar", Long.class);
-//	System.out.println( "dokuTarLis" + dokuTarLis.size() );
-//	
-//	record EcostatColums (Long id , String table_name,String column_name) {}
-//	
-//	
-////	intezmenyService.saveIntezmeny( xx.toDomain(), 2L );
-//	
+		//		var jdbcTemplate = new JdbcTemplate(derbyDataSourceConfiguration.dataSource());
+		//		
+		//		var idList = jdbcTemplate.queryForList( "select id from AFA where intezmeny_id = " + intezmenyId, String.class );
 
-	
-	//RowMapper<EcostatColums> xxxx;
-	
-	
-	
-	
-	xxx("MK_A%");
-	
-//	for ( Map<String, Object> row : xxxList ) {
-//		Object e= row.get("sss");
-//	}
-	
- 
-		
-		
+		xxx( "MK_BNOTORZS" );
+		xxx( "MK_ARTORZS" );
+		xxx( "MK_PARAMETEREK" );
+		//		var f1 = new SaveFelhasznaloRequest();
+		//		f1.setFelhasznalonev( "lkjélkjéklj" );
+		//		f1.setBeosztas( "asdasdasd" );
+		//		f1.setErvenyessegKezdete(LocalDateTime.now());
+		//		f1.setEmail( "íyÍY@ggh.hu" );
+		//		f1.setTelefonszam( "9878979" );
+		//		f1.setNev( "++++12" );
+		//		felhasznaloService.saveFelhasznalo( f1, 2L );
+		//		
+
+		//	var fi = new IntezmenyListaRequest();
+		//	//fi.getMainFilter().setIranyitoszam( new FilterIntegerValue( 6500 ) );
+		//	fi.setPaginatorEnabled( false );
+		//	fi.setOrder( new IntezmenyListaOrder() );
+		//	var lr = intezmenyService.findByFilter( fi  );
+		//	System.out.println( "Intezmeny" + lr.getRowCount() );
+		////	lr.getListElements().forEach(System.out::println);
+		//	//
+		//	var xx = new SaveIntezmenyRequestDTO();
+		//	//
+		//	var jdbctAkkor = new JdbcTemplate(akkorDataSourceConfiguration.dataSource());
+		//	//
+		//	var dokuTarLis= jdbctAkkor.queryForList( "select id from doku_tar", Long.class);
+		//	System.out.println( "dokuTarLis" + dokuTarLis.size() );
+		//	
+		//	record EcostatColums (Long id , String table_name,String column_name) {}
+		//	
+		//	
+		////	intezmenyService.saveIntezmeny( xx.toDomain(), 2L );
+		//	
+
+		//RowMapper<EcostatColums> xxxx;
+
+		//xxx("MK_A%");
+
+		//	for ( Map<String, Object> row : xxxList ) {
+		//		Object e= row.get("sss");
+		//	}
+
 		//		final var aPay = archiveRepository.getPayments();
 		//		final var cPay = centralRepository.getPayments();
 		//final var axPay = archiveRepository.getPaymentById( 1 );
-//		var exportConn = exportDataSourceConfiguration.dataSource().getConnection();
-//		var ecostatConn = ecostatDataSourceConfiguration.dataSource().getConnection();
-//		var medkontrollConn = medkontrollDataSourceConfiguration.dataSource().getConnection();
-//		medkontrollConn.setReadOnly( true );
-//		var akkorConn = akkorDataSourceConfiguration.dataSource().getConnection();
+		//		var exportConn = exportDataSourceConfiguration.dataSource().getConnection();
+		//		var ecostatConn = ecostatDataSourceConfiguration.dataSource().getConnection();
+		//		var medkontrollConn = medkontrollDataSourceConfiguration.dataSource().getConnection();
+		//		medkontrollConn.setReadOnly( true );
+		//		var akkorConn = akkorDataSourceConfiguration.dataSource().getConnection();
 
 		//		var exdsc = (HikariConfig)exportDataSourceConfiguration;
 		//		var ecdsc = (HikariDataSource)ecostatDataSourceConfiguration.dataSource();
 
-//		var exds = (HikariDataSource)exportDataSourceConfiguration.dataSource();
-//		var ecds = (HikariDataSource)ecostatDataSourceConfiguration.dataSource();
-//
-//		exds.getHikariConfigMXBean().getPoolName();
-//		ecds.getHikariConfigMXBean().getPoolName();
+		//		var exds = (HikariDataSource)exportDataSourceConfiguration.dataSource();
+		//		var ecds = (HikariDataSource)ecostatDataSourceConfiguration.dataSource();
+		//
+		//		exds.getHikariConfigMXBean().getPoolName();
+		//		ecds.getHikariConfigMXBean().getPoolName();
 
 		//var xx = ecostatColumnsRepository.getTableNamesFromEcostatColumns();
 		//medkontrollDataSourceConfiguration.dataSource();
 		//archiveDataSourceConfiguration.jdbcTemplate().execute( "delete from ECOSTAT_COLUMS where id > 4000" );
-//		HikariConfig config = new HikariConfig();
+		//		HikariConfig config = new HikariConfig();
 		//		var namedjdbcTemplate = new NamedParameterJdbcTemplate( archiveDataSourceConfiguration.dataSource() );
 		/*
 				var jdbcTemplate = new JdbcTemplate( exportDataSourceConfiguration.dataSource() );
@@ -153,33 +155,52 @@ public class Runner implements CommandLineRunner {
 				jdbcTemplate.execute( "delete from ECOSTAT_COLUMS where id > 4000" );
 		*/
 
-//		System.out.println( getDataSourceInfo( ecostatDataSourceConfiguration.dataSource(), "ecostat" ).stream().collect( Collectors.joining( "\n" ) ) );
-//		System.out.println();
-//		System.out.println( getDataSourceInfo( exportDataSourceConfiguration.dataSource(), "export" ).stream().collect( Collectors.joining( "\n" ) ) );
-//		System.out.println();
-//		System.out.println( getDataSourceInfo( medkontrollDataSourceConfiguration.dataSource(), "medkontroll" ).stream().collect( Collectors.joining( "\n" ) ) );
-//		System.out.println();
-//		System.out.println( getDataSourceInfo( akkorDataSourceConfiguration.dataSource(), "akkor" ).stream().collect( Collectors.joining( "\n" ) ) );
+		//		System.out.println( getDataSourceInfo( ecostatDataSourceConfiguration.dataSource(), "ecostat" ).stream().collect( Collectors.joining( "\n" ) ) );
+		//		System.out.println();
+		//		System.out.println( getDataSourceInfo( exportDataSourceConfiguration.dataSource(), "export" ).stream().collect( Collectors.joining( "\n" ) ) );
+		//		System.out.println();
+		//		System.out.println( getDataSourceInfo( medkontrollDataSourceConfiguration.dataSource(), "medkontroll" ).stream().collect( Collectors.joining( "\n" ) ) );
+		//		System.out.println();
+		//		System.out.println( getDataSourceInfo( akkorDataSourceConfiguration.dataSource(), "akkor" ).stream().collect( Collectors.joining( "\n" ) ) );
 
 		//		System.out.println( exportCheck( jdbcTemplate ) );
 		//		System.out.println( getConnInfo( ecostatConn, "ecostat" ).stream().collect( Collectors.joining( "\n" ) ) );
 		//		System.out.println( getConnInfo( exportConn, "export" ).stream().collect( Collectors.joining( "\n" ) ) );
 		//		System.out.println( getConnInfo( medkontrollConn, "medkontroll" ).stream().collect( Collectors.joining( "\n" ) ) );
 		//		System.out.println( getConnInfo( akkorConn, "akkor" ).stream().collect( Collectors.joining( "\n" ) ) );
-	//System.exit( 0 );
+		//System.exit( 0 );
 	}
 
-	private void xxx( Object... params ) {//new Object[]{"MK%"}
-		var jdbctExport = new JdbcTemplate(derbyDataSourceConfiguration.dataSource());
-		var selectModell = new SelectModell(jdbctExport, "select * from ecostat_colums where table_name like ?" )
-			.select( params );
-		
-		for ( var rowNum = 0; rowNum < selectModell.getRowCount(); rowNum++ ) {
-			var COLUMN_NAME = selectModell.getCell( rowNum, "COLUMN_NAME", String.class );
-			var COLUMN_ID = selectModell.getCell( rowNum, "COLUMN_ID", Long.class );
-			System.out.println(COLUMN_NAME);
-		}
-		
+	@SneakyThrows
+	private void xxx( String fileName ) {//new Object[]{"MK%"}
+		var jdbctExport = new JdbcTemplate( derbyDataSourceConfiguration.dataSource() );
+
+		var url = Paths.get( derbyDataSourceConfiguration.dataSource().getConnection().getMetaData().getURL()
+			.replace( "jdbc:derby:directory://", "" ) ).getParent();
+		url = Paths.get( url.toString(), "export1" );
+		var selectModell = new SelectModell( jdbctExport, "select * from " + fileName ) // where table_name like ?
+			.select( /*params*/ );
+
+		var arrayDataModelFormatter = new ArrayDataModelFormatter( selectModell );
+
+		arrayDataModelFormatter.setColumnInfo( false ).setSorszamozas( false )
+			.setKeret( ArrayDataModelFormatter.KERET.SZIMPLAD )
+			.setTopSeparator( false )
+			.setHeaderCompress( false ).setBottomSeparator( false ).setTopSeparator( false );
+
+		Files.write( Paths.get( url.toString(), fileName + ".txt" ), arrayDataModelFormatter.getFormatted().getBytes( StandardCharsets.UTF_8 ),
+			StandardOpenOption.TRUNCATE_EXISTING,
+			StandardOpenOption.CREATE,
+			StandardOpenOption.WRITE );
+
+		//System.out.println( arrayDataModelFormatter.getFormatted() );
+
+		//		for ( var rowNum = 0; rowNum < selectModell.getRowCount(); rowNum++ ) {
+		//			var COLUMN_NAME = selectModell.getCell( rowNum, "COLUMN_NAME", String.class );
+		//			var COLUMN_ID = selectModell.getCell( rowNum, "COLUMN_ID", Long.class );
+		//			System.out.println(COLUMN_NAME);
+		//		}
+
 	}
 
 	@SneakyThrows
@@ -191,17 +212,17 @@ public class Runner implements CommandLineRunner {
 			try (final var conn = ds.getConnection()) {
 				modell.add( "ProductVersion" ).add( conn.getMetaData().getDatabaseProductVersion().replace( "\r", "" ).replace( "\n", "" ) );
 				modell.add( "Driver" ).add( conn.getMetaData().getDriverName() + " " + conn.getMetaData().getDriverVersion() );
-				modell.add( "url - username" ).add( conn.getMetaData().getURL() + " UserName:" + conn.getMetaData().getUserName() ) ;
+				modell.add( "url - username" ).add( conn.getMetaData().getURL() + " UserName:" + conn.getMetaData().getUserName() );
 				modell.add( "AutoCommit" ).add( conn.getAutoCommit() );
 			}
 			modell.add( "ConnectionTimeout" ).add( ds.getConnectionTimeout() + "" );
 			modell.add( "ConnectionInitSql" ).add( ds.getConnectionInitSql() + "" );
 			modell.add( "ConnectionTestQuery" ).add( ds.getConnectionTestQuery() + "" );
-//			modell.add( "DataSourceJNDI" ).add( ds.getDataSourceJNDI() + "" );
-//			modell.add( "HealthCheckProperties" ).add( ds.getHealthCheckProperties() + "" );
-//			modell.add( "DataSourceClassName" ).add( ds.getDataSourceClassName() + "" );
-//			modell.add( "DataSourceProperties" ).add( ds.getDataSourceProperties() + "" );
-//			modell.add( "DriverClassName" ).add( ds.getDriverClassName() + "" );
+			//			modell.add( "DataSourceJNDI" ).add( ds.getDataSourceJNDI() + "" );
+			//			modell.add( "HealthCheckProperties" ).add( ds.getHealthCheckProperties() + "" );
+			//			modell.add( "DataSourceClassName" ).add( ds.getDataSourceClassName() + "" );
+			//			modell.add( "DataSourceProperties" ).add( ds.getDataSourceProperties() + "" );
+			//			modell.add( "DriverClassName" ).add( ds.getDriverClassName() + "" );
 			modell.add( "KeepaliveTime" ).add( ds.getKeepaliveTime() + "" );
 			modell.add( "IdleTimeout" ).add( ds.getIdleTimeout() + "" );
 			modell.add( "InitializationFailTimeout" ).add( ds.getInitializationFailTimeout() + "" );
@@ -216,10 +237,7 @@ public class Runner implements CommandLineRunner {
 			modell.add( "ScheduledExecutor" ).add( ds.getScheduledExecutor() + "" );
 			modell.add( "ThreadFactory" ).add( ds.getThreadFactory() + "" );
 			modell.add( "ValidationTimeout" ).add( ds.getValidationTimeout() + "" );
-			
-			
-			
-			
+
 			modell.add( "HikariConfigMXBean.LeakDetectionThreshold" ).add( ds.getHikariConfigMXBean().getLeakDetectionThreshold() + "" );
 			modell.add( "HikariConfigMXBean.MaximumPoolSize" ).add( ds.getHikariConfigMXBean().getMaximumPoolSize() + "" );
 			modell.add( "HikariConfigMXBean.MaxLifetime" ).add( ds.getHikariConfigMXBean().getMaxLifetime() + "" );

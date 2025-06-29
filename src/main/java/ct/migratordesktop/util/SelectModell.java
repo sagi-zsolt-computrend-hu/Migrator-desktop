@@ -10,7 +10,7 @@ import java.util.Objects;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.Assert;
 
-public class SelectModell {
+public class SelectModell extends ArrayDataModell{
 	private static final List<String>	TRUEBOOLEANLIST	= List.of( "true", "igen", "1", "*" );
 	private final JdbcTemplate				jdbcTemplate;
 	private final String							sql;
@@ -26,6 +26,14 @@ public class SelectModell {
 	public SelectModell select( Object... params ) {
 		rowList = jdbcTemplate.queryForList( sql, params );
 
+		if (!rowList.isEmpty()) {
+			rowList.get( 0 ).keySet().forEach( e->addHeader( e ) );
+			rowList.forEach( r->{
+				r.values().forEach(e->add( e ) );
+			} );
+		}
+		
+		
 		return this;
 	}
 
