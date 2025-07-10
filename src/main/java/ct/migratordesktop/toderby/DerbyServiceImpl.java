@@ -56,7 +56,7 @@ class DerbyServiceImpl {
 			tableNameList = derbyDataSource.getTableNamesFromEcostatColumns();
 			log.debug( "exporting tables: {}", tableNameList );
 			//
-			final var executor = Executors.newFixedThreadPool( derbyProperties.getThreads() );
+			final var executor = Executors.newFixedThreadPool( derbyProperties.getStepThreads() );
 			for ( String tableName : tableNameList ) {
 				final var step = new DerbyStep( this );
 				step.setTableName( tableName );
@@ -151,7 +151,7 @@ class DerbyServiceImpl {
 		final var stopper = new Stopper().start();
 		try {
 			log.info( "Export Compare start TableCount:{} Properties:{}", tableNameList.size(), derbyProperties );
-			final var executor = Executors.newFixedThreadPool( derbyProperties.getThreads() );
+			final var executor = Executors.newFixedThreadPool( derbyProperties.getStepThreads() );
 			for ( String tableName : tableNameList ) {
 				final var step = new CompareStep( this );
 				step.setTableName( tableName );

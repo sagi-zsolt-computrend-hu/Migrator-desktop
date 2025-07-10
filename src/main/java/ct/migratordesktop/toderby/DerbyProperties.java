@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "derby")
 public class DerbyProperties {
-	private int			pageSize						= 100000;
+	private int			pageSize						= 50000;
 	private String	derbyColumnsWhere	= "TABLE_NAME like 'MK_%'";
-	private int			threads							= 4;
+	private int			stepThreads							= 2;
+	private int			subStepThreads					= 4;
 }

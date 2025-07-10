@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -12,6 +16,7 @@ import java.util.stream.Collectors;
 import ct.migratordesktop.models.EcostatColumn;
 import ct.migratordesktop.util.Converters;
 import ct.migratordesktop.util.Stopper;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -22,19 +27,28 @@ class DerbyStep implements Runnable, Converters {
 		super();
 		this.derbyService = derbyService;
 	}
-
-	private DerbyServiceImpl	derbyService;
-	@Setter()
+	@Getter
+	private final DerbyServiceImpl	derbyService;
+	@Setter
+	@Getter
 	private String						tableName;
+	@Getter
 	private AtomicInteger			exported;
+	@Getter
 	private AtomicLong				id;
+	@Getter
 	private List<String>			columnNameList;
+	@Getter
 	private List<String>			columnTypeList;
+	@Getter
 	private String						insertCommand;
+	@Getter
 	private int								rowCount;
 	private Stopper						stopper;
 	private List<String>			selectList;
-
+	@Getter
+	private ThreadPoolExecutor executor;
+	
 	@SneakyThrows
 	@Override
 	public void run() {
@@ -44,7 +58,6 @@ class DerbyStep implements Runnable, Converters {
 		selectList = List.of();
 		try {
 			rowCount = derbyService.getEcoStatDataSource().getCount( tableName );
-			log.info( "start {} rowCount:{}", tableName, rowCount );
 			final var create = /*exportServiceImpl.getExportDataSource().*/getCreateTableFromEcostatColumns( tableName );
 
 			derbyService.getDerbyDataSource().execute( create.toUpperCase() );
@@ -60,28 +73,34 @@ class DerbyStep implements Runnable, Converters {
 				selectHelper.setPageSize( derbyService.getDerbyProperties().getPageSize() );
 				selectHelper.setRowCount( rowCount );
 				selectList = selectHelper.getSelectList();
-				try (final var connRead = derbyService.getEcoStatDataSource().getConnection();
-					final var connWrite = derbyService.getDerbyDataSource().getConnection();) {
-					connRead.setReadOnly( true );
-					connWrite.setAutoCommit( false );
+				log.info( "start {} rowCount:{} subStep:{}", tableName, rowCount ,selectList.size());
+//				try (final var connRead = derbyService.getEcoStatDataSource().getConnection();
+//					final var connWrite = derbyService.getDerbyDataSource().getConnection();) {
+//					connRead.setReadOnly( true );
+//					connWrite.setAutoCommit( false );
+				executor = new ThreadPoolExecutor(derbyService.getDerbyProperties().getSubStepThreads(),derbyService.getDerbyProperties().getSubStepThreads(),0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>());					//Executors.newFixedThreadPool( derbyService.getDerbyProperties().getSubStepThreads( ));
 					for ( int i = 0; i < selectList.size(); i++ ) {
 						final var sqlSelect = selectList.get( i );
-						try (final var st = connRead.prepareStatement( sqlSelect, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY )) {
-							st.setMaxRows( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
-							st.setFetchSize( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
-							try (final var rs = st.executeQuery();) {
-								writeResultSet( connWrite, rs );
-							}
-						}
+						var subStep= new DerbySubStep( this ,sqlSelect,selectList.size() == 1 ? "":(i+1)+"/" + selectList.size() );
+						executor.execute( subStep );
+//						try (final var st = connRead.prepareStatement( sqlSelect, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY )) {
+//							st.setMaxRows( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
+//							st.setFetchSize( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
+//							try (final var rs = st.executeQuery();) {
+//								writeResultSet( connWrite, rs );
+//							}
+//						}
 					}
+					executor.shutdown();
+					executor.awaitTermination( 100, TimeUnit.HOURS );
 				}
-			}
+//			}
 		}
 		catch ( Exception e ) {
 			log.error( "export", e );
 		}
 		finally {
-			log.info( "stop  {} rowCount:{} Time:{} Pages:{}", tableName, derbyService.getDerbyDataSource().getCount( tableName ), stopper.getTime(), selectList.size() );
+			log.info( "stop  {} rowCount:{} Time:{} ", tableName, derbyService.getDerbyDataSource().getCount( tableName ), stopper.getTime() );
 		}
 	}
 

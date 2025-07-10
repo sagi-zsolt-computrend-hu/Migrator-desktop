@@ -14,8 +14,10 @@
 	<version>0.0.1</version>
 	<name>Migrator-desktop</name>
 	<description>Migrator2</description>
+	<packaging>${package.type}</packaging>
 	<properties>
 		<java.version>17</java.version>
+		<package.type>jar</package.type>
 		<mybatis.version>3.0.4</mybatis.version>
 	</properties>
 
