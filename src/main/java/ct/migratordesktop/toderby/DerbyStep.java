@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -27,28 +26,29 @@ class DerbyStep implements Runnable, Converters {
 		super();
 		this.derbyService = derbyService;
 	}
+
 	@Getter
 	private final DerbyServiceImpl	derbyService;
 	@Setter
 	@Getter
-	private String						tableName;
+	private String									tableName;
 	@Getter
-	private AtomicInteger			exported;
+	private AtomicInteger						exported;
 	@Getter
-	private AtomicLong				id;
+	private AtomicLong							id;
 	@Getter
-	private List<String>			columnNameList;
+	private List<String>						columnNameList;
 	@Getter
-	private List<String>			columnTypeList;
+	private List<String>						columnTypeList;
 	@Getter
-	private String						insertCommand;
+	private String									insertCommand;
 	@Getter
-	private int								rowCount;
-	private Stopper						stopper;
-	private List<String>			selectList;
+	private int											rowCount;
+	private Stopper									stopper;
+	private List<String>						selectList;
 	@Getter
-	private ThreadPoolExecutor executor;
-	
+	private ThreadPoolExecutor			executor;
+
 	@SneakyThrows
 	@Override
 	public void run() {
@@ -58,13 +58,13 @@ class DerbyStep implements Runnable, Converters {
 		selectList = List.of();
 		try {
 			rowCount = derbyService.getEcoStatDataSource().getCount( tableName );
-			final var create = /*exportServiceImpl.getExportDataSource().*/getCreateTableFromEcostatColumns( tableName );
+			final var create = getCreateTableFromEcostatColumns( tableName );
 
 			derbyService.getDerbyDataSource().execute( create.toUpperCase() );
 			if ( rowCount > 0 ) {
 				this.columnNameList = derbyService.getDerbyRepository().getColumnNameListFromEcostatColumns( tableName );
 				this.columnTypeList = derbyService.getDerbyRepository().getColumnTypeListFromEcostatColumns( tableName );
-				this.insertCommand = getInsertCommand( tableName  );
+				this.insertCommand = getInsertCommand( tableName );
 				log.debug( "insertCommand:{}", insertCommand );
 				final var selectHelper = new SelectHelper();
 				selectHelper.setTableName( tableName );
@@ -73,28 +73,16 @@ class DerbyStep implements Runnable, Converters {
 				selectHelper.setPageSize( derbyService.getDerbyProperties().getPageSize() );
 				selectHelper.setRowCount( rowCount );
 				selectList = selectHelper.getSelectList();
-				log.info( "start {} rowCount:{} subStep:{}", tableName, rowCount ,selectList.size());
-//				try (final var connRead = derbyService.getEcoStatDataSource().getConnection();
-//					final var connWrite = derbyService.getDerbyDataSource().getConnection();) {
-//					connRead.setReadOnly( true );
-//					connWrite.setAutoCommit( false );
-				executor = new ThreadPoolExecutor(derbyService.getDerbyProperties().getSubStepThreads(),derbyService.getDerbyProperties().getSubStepThreads(),0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>());					//Executors.newFixedThreadPool( derbyService.getDerbyProperties().getSubStepThreads( ));
-					for ( int i = 0; i < selectList.size(); i++ ) {
-						final var sqlSelect = selectList.get( i );
-						var subStep= new DerbySubStep( this ,sqlSelect,selectList.size() == 1 ? "":(i+1)+"/" + selectList.size() );
-						executor.execute( subStep );
-//						try (final var st = connRead.prepareStatement( sqlSelect, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY )) {
-//							st.setMaxRows( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
-//							st.setFetchSize( Math.min( derbyService.getDerbyProperties().getPageSize(), rowCount ) );
-//							try (final var rs = st.executeQuery();) {
-//								writeResultSet( connWrite, rs );
-//							}
-//						}
-					}
-					executor.shutdown();
-					executor.awaitTermination( 100, TimeUnit.HOURS );
+				log.info( "start {} rowCount:{} subStep:{}", tableName, rowCount, selectList.size() );
+				executor = new ThreadPoolExecutor( derbyService.getDerbyProperties().getSubStepThreads(), derbyService.getDerbyProperties().getSubStepThreads(), 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>() ); //Executors.newFixedThreadPool( derbyService.getDerbyProperties().getSubStepThreads( ));
+				for ( int i = 0; i < selectList.size(); i++ ) {
+					final var sqlSelect = selectList.get( i );
+					var subStep = new DerbySubStep( this, sqlSelect, selectList.size() == 1 ? "" : (i + 1) + "/" + selectList.size() );
+					executor.execute( subStep );
 				}
-//			}
+				executor.shutdown();
+				executor.awaitTermination( 100, TimeUnit.HOURS );
+			}
 		}
 		catch ( Exception e ) {
 			log.error( "export", e );
@@ -104,35 +92,6 @@ class DerbyStep implements Runnable, Converters {
 		}
 	}
 
-	private void writeResultSet( Connection connWrite, ResultSet rs ) throws Exception {
-		try (final var st = connWrite.prepareStatement( this.insertCommand )) {
-			while ( rs.next() ) {
-				st.setLong( 1, id.incrementAndGet() );
-				for ( int i = 1; i < this.columnTypeList.size() + 1; i++ ) {
-					final var columnType = this.columnTypeList.get( i - 1 );
-					final var columnName = this.columnNameList.get( i - 1 );
-
-					switch ( columnType ) {
-					case "String" -> st.setString( i + 1, rs.getString( columnName ) );
-					case "BigDecimal" -> st.setBigDecimal( i + 1, rs.getBigDecimal( columnName ) );
-					case "LocalDate" -> st.setDate( i + 1, rs.getDate( columnName ) );
-					case "LocalDateTime" -> st.setTimestamp( i + 1, rs.getTimestamp( columnName ) );
-					case "Integer" -> st.setInt( i + 1, rs.getInt( columnName ) );
-					case "Float" -> st.setFloat( i + 1, rs.getFloat( columnName ) );
-					case "Long" -> st.setLong( i + 1, rs.getLong( columnName ) );
-					default -> st.setObject( i + 1, rs.getObject( columnName ) );
-					}
-				}
-				st.execute();
-				exported.incrementAndGet();
-			}
-		}
-		finally {
-			connWrite.commit();
-			if ( this.selectList.size() > 1 )
-				log.debug( "exported {} {} / ({}) Time:{}", tableName, exported, this.rowCount, this.stopper.getTime() );
-		}
-	}
 
 	private String getCreateTableFromEcostatColumns( String tableName ) {
 		final var sorok = new ArrayList<String>();
@@ -181,14 +140,14 @@ class DerbyStep implements Runnable, Converters {
 		final var qu = columnNameList.stream().map( e -> "?" ).collect( Collectors.joining( ",", "?,", "" ) );
 		final var columns = columnNameList.stream().collect( Collectors.joining( "," ) );
 		final var insertCommand = "INSERT INTO " + tableName + " ("
-			+ ("ID_EXPORT,")
+			+ ("ID_DERBY,")
 			+ columns + ") VALUES (" + qu + ")";
 		return insertCommand;
 	}
 
 	private EcostatColumn getIdExport() {
 		final var columnsEntity = new EcostatColumn();
-		columnsEntity.setColumnName( "ID_EXPORT" );
+		columnsEntity.setColumnName( "ID_DERBY" );
 		columnsEntity.setDataType( "bigint" );
 		columnsEntity.setDataLength( 0 );
 		columnsEntity.setDataPrecision( 0 );

@@ -151,7 +151,7 @@ class DerbyServiceImpl {
 		final var stopper = new Stopper().start();
 		try {
 			log.info( "Export Compare start TableCount:{} Properties:{}", tableNameList.size(), derbyProperties );
-			final var executor = Executors.newFixedThreadPool( derbyProperties.getStepThreads() );
+			final var executor = Executors.newFixedThreadPool( derbyProperties.getSubStepThreads() );
 			for ( String tableName : tableNameList ) {
 				final var step = new CompareStep( this );
 				step.setTableName( tableName );

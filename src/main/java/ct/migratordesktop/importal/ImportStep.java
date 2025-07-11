@@ -83,7 +83,7 @@ class ImportStep implements Runnable,Converters {
 		final var qu = columnNameList.stream().map( e -> "?" ).collect( Collectors.joining( ",", "", "" ) );
 		final var columns = columnNameList.stream().collect( Collectors.joining( "," ) );
 		final var insertCommand = "INSERT INTO " + tableName + " ("
-		//	+ ("ID_EXPORT,")
+		//	+ ("ID_DERBY,")
 			+ columns + ") VALUES (" + qu + ")";
 		return insertCommand;
 	}

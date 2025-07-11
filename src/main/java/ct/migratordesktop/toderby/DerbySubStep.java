@@ -3,6 +3,9 @@ package ct.migratordesktop.toderby;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+import javax.sql.DataSource;
+
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "DerbyStep")
@@ -21,14 +24,13 @@ class DerbySubStep implements Runnable {
 	@Override
 	public void run() {
 		if ( !index.isEmpty() )
-			log.info( "SubStep start {} {} executor:{}", derbyStep.getTableName(), index, derbyStep.getExecutor().getActiveCount() );
+			log.info( "SubStep start {} {} Ex:{} Dc:{} Ec:{}", derbyStep.getTableName(), index, derbyStep.getExecutor().getActiveCount(),
+				getReport( derbyStep.getDerbyService().getDerbyDataSource().getJdbcTemplate().getDataSource() ),
+				getReport( derbyStep.getDerbyService().getEcoStatDataSource().getJdbcTemplate().getDataSource() ) );
 		try (final var connRead = derbyStep.getDerbyService().getEcoStatDataSource().getConnection();
 			final var connWrite = derbyStep.getDerbyService().getDerbyDataSource().getConnection();) {
 			connRead.setReadOnly( true );
 			connWrite.setAutoCommit( false );
-			//			for ( int i = 0; i < selectList.size(); i++ ) {
-			//				final var sqlSelect = selectList.get( i );
-			//				var xx= new DerbySubStep( this ,sqlSelect);
 			try (final var st = connRead.prepareStatement( sqlSelect, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY )) {
 				st.setMaxRows( Math.min( derbyStep.getDerbyService().getDerbyProperties().getPageSize(), derbyStep.getRowCount() ) );
 				st.setFetchSize( Math.min( derbyStep.getDerbyService().getDerbyProperties().getPageSize(), derbyStep.getRowCount() ) );
@@ -36,9 +38,6 @@ class DerbySubStep implements Runnable {
 					writeResultSet( connWrite, rs );
 				}
 			}
-
-			//		}
-
 		}
 		catch ( Exception e ) {
 			log.error( "export", e );
@@ -69,12 +68,13 @@ class DerbySubStep implements Runnable {
 				st.execute();
 				derbyStep.getExported().incrementAndGet();
 			}
+			connWrite.commit();
 		}
-		//		finally {
-		connWrite.commit();
-		//			if ( this.selectList.size() > 1 )
-		//				log.debug( "exported {} {} / ({}) Time:{}", tableName, exported, this.rowCount, this.stopper.getTime() );
-		//		}
-		//	}
+	}
+
+	private String getReport( DataSource ds ) {
+		var hikariDataSource = (HikariDataSource)ds;
+		final var ret = hikariDataSource.getHikariPoolMXBean().getActiveConnections() + "/" + hikariDataSource.getHikariPoolMXBean().getTotalConnections() + "/" + hikariDataSource.getHikariPoolMXBean().getThreadsAwaitingConnection();
+		return ret;
 	}
 }

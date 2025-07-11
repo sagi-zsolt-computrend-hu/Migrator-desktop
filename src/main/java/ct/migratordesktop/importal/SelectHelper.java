@@ -27,7 +27,7 @@ class SelectHelper {
 	public List<String> getSelectList() {
 		final var ret = new ArrayList<String>();
 		if ( rowCount < pageSize )
-			ret.add( "SELECT" + columns + " FROM " + tableName + " ORDER BY ID_EXPORT" );
+			ret.add( "SELECT" + columns + " FROM " + tableName + " ORDER BY ID_DERBY" );
 		else {
 			recalc();
 			for ( int i = 0; i < pageCount; i++ ) {
@@ -42,11 +42,11 @@ class SelectHelper {
 			.replace( "×tableName×", this.tableName )
 			.replace( "×columns×", columns );
 		if ( false == isNoPage() ) {
-			selectSql += " WHERE ID_EXPORT BETWEEN ×from× AND ×to× "
+			selectSql += " WHERE ID_DERBY BETWEEN ×from× AND ×to× "
 				.replace( "×from×", getFrom( pageNumber ) )
 				.replace( "×to×", getTo( pageNumber ) );
 		}
-		selectSql += " ORDER BY ID_EXPORT ";
+		selectSql += " ORDER BY ID_DERBY ";
 		return selectSql;
 	}
 
