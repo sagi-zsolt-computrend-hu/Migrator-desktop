@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import ct.migratordesktop.swing.AbstractPanel;
 import ct.migratordesktop.util.Converters;
@@ -28,11 +29,13 @@ public class ExportPanel extends AbstractPanel implements Converters {
 				@SneakyThrows
 				public void actionPerformed( ActionEvent event ) {
 					final var actionName = ((JButton)event.getSource()).getText();
-					start( actionName );
-					new Thread( () -> {
-						exportService.generateDerby();
-						stop();
-					} ).start();
+					final var result = JOptionPane.showInternalConfirmDialog( null, "Futtatható ?", actionName, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE );
+					if ( result == JOptionPane.YES_OPTION )
+						new Thread( () -> {
+							start( actionName );
+							exportService.export();
+							stop();
+						} ).start();
 				}
 			} );
 			buttonPanel.add( jButton );
