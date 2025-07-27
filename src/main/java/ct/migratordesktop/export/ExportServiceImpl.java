@@ -45,17 +45,17 @@ public class ExportServiceImpl implements Converters {
 		}
 
 		final var exector = Executors.newFixedThreadPool( 1 );
-		exp( exector, new StepRecord( "ECOSTAT_COLUMS", """
-			select * From ECOSTAT_COLUMS
-						""" ) );
+//		exp( exector, new StepRecord( "ECOSTAT_COLUMS", """
+//			select * From ECOSTAT_COLUMS
+//						""" ) );
 
-		exp( exector, new StepRecord( "ECOSTAT_PRIMARY_KEYS", """
-			select * From ECOSTAT_PRIMARY_KEYS
-						""" ) );
+//		exp( exector, new StepRecord( "ECOSTAT_PRIMARY_KEYS", """
+//			select * From ECOSTAT_PRIMARY_KEYS
+//						""" ) );
 
-		exp( exector, new StepRecord( "MK_PARAMETEREK", """
-			select * From MK_PARAMETEREK
-						""" ) );
+//		exp( exector, new StepRecord( "MK_PARAMETEREK", """
+//			select * From MK_PARAMETEREK
+//						""" ) );
 
 		exp( exector, new StepRecord( "aradat_torzs",
 			"""
@@ -100,12 +100,18 @@ public class ExportServiceImpl implements Converters {
 			""", intezmenyProperties.get( "EV" ) ) );
 		
 		exp( exector, new StepRecord( "aradat_torzs", """
-			SELECT *		 FROM APP.MK_ARTORZS ORDER BY ev,honap
+			SELECT * FROM APP.MK_ARTORZS ORDER BY ev,honap
 			""" ) );
 		
 		exp( exector, new StepRecord( "koltseg_arsema", """
 			SELECT * FROM APP.MK_ARKATA WHERE VONEV IN (?)
 			""" , intezmenyProperties.get( "EV" )) );
+
+		exp( exector, new StepRecord( "mennyisegi_egyseg", """
+			SELECT n.*,i.nev AS nev_aeek, i.tipus FROM APP.MK_MENNY_EGYSEG n left join MK_MEGYS_AEEK i ON n.KOD_AEEK = i.KOD AND i.EV = n.EV
+			 ORDER BY n.ev,n.KOD
+			""" ));
+
 
 		exector.shutdown();
 		exector.awaitTermination( 100, TimeUnit.HOURS );

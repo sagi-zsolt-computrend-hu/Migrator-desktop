@@ -54,7 +54,7 @@ public class ExportStep implements Converters, Runnable {
 			
 			final var jdbcTemplate = new JdbcTemplate( derbyDataSourceConfiguration.dataSource() );
 			final var selectModell = new SelectModell( jdbcTemplate, stepRecord.sql() ).select( stepRecord.params() );
-			final var arrayDataModelFormatter = new ArrayDataModelFormatter( selectModell );
+			final var arrayDataModelFormatter = new ArrayDataModelFormatter( selectModell ).setTizedesjel( "." );
 
 			arrayDataModelFormatter.setColumnInfo( false ).setSorszamozas( false )
 				.setKeret( ArrayDataModelFormatter.KERET.SZIMPLAD ).setTopSeparator( false )

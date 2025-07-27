@@ -34,6 +34,7 @@ public class ArrayDataModelFormatter {
 	private List<Column>											columns;
 	private List<String>											formatted;
 	private Hashtable<Integer, List<Object>>	headerExtras;
+	private String														tizedesjel					= ",";
 
 	public ArrayDataModelFormatter( ArrayDataModell arrayDataModell ) {
 		this.arrayDataModell = arrayDataModell;
@@ -382,6 +383,11 @@ public class ArrayDataModelFormatter {
 		this.bottomSeparator = bottomSeparator;
 		return this;
 	}
+	
+	public ArrayDataModelFormatter setTizedesjel( String tizedesjel ) {
+		this.tizedesjel = tizedesjel;
+		return this;
+	}
 
 	class Row {
 		public List<Cell> cells = new ArrayList<>();
@@ -419,7 +425,7 @@ public class ArrayDataModelFormatter {
 				if ( column.tizedesLenght > 0 ) {
 					String tizedes = getTizedes( value );
 					if ( !tizedes.isEmpty() ) {
-						stringValue += ",";
+						stringValue += tizedesjel;
 						stringValue += tizedes;
 						stringValue += repl( column.tizedesLenght - tizedes.length(), ' ' );
 						stringValue = repl( column.columnLenght - stringValue.length(), ' ' ) + stringValue;
@@ -432,8 +438,7 @@ public class ArrayDataModelFormatter {
 				}
 
 				formatted = stringValue;
-			}
-			else if ( value instanceof Date ) {
+			} else if ( value instanceof Date ) {
 				String datum = new java.sql.Timestamp( ((Date)value).getTime() ).toLocalDateTime().format( DateTimeFormatter.ofPattern( YYYY_MM_DD_HH_MM_SS ) );
 				formatted = padRight( datum, column.columnLenght );
 			} else

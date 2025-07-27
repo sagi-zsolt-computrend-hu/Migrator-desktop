@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import ct.migratordesktop.beolvaso.BeolvasoPanel;
 import ct.migratordesktop.datasources.DataSourcePanel;
 import ct.migratordesktop.export.ExportPanel;
 import ct.migratordesktop.importal.ImportPanel;
@@ -35,19 +36,19 @@ public class MigratorJframe extends JFrame implements CommandLineRunner, Ordered
 	private TesztDataPanel		tesztDataPanel;
 
 	@Autowired
-	private ExportPanel		exportPanel;
+	private ExportPanel				exportPanel;
 
-
-	
 	@Autowired
-	private SchemaPanel		schemaPanel;
+	private BeolvasoPanel			beolvasoPanel;
 
-//	@Autowired
-//	private InitDbPanel		initDbPanel;
-	
-	
+	@Autowired
+	private SchemaPanel				schemaPanel;
+
+	//	@Autowired
+	//	private InitDbPanel		initDbPanel;
+
 	public MigratorJframe() throws HeadlessException {
-		setTitle( "DataSources [" + System.getProperty( "user.dir" ) + "]"  );
+		setTitle( "DataSources [" + System.getProperty( "user.dir" ) + "]" );
 	}
 
 	@Override
@@ -134,18 +135,31 @@ public class MigratorJframe extends JFrame implements CommandLineRunner, Ordered
 				} );
 			jMenuBar.add( mi );
 		}
-//		{
-//			var mi = new JMenuItem( "InitDb" );
-//			mi.addActionListener(
-//				new ActionListener() {
-//					public void actionPerformed( ActionEvent event ) {
-//						setContentPane( initDbPanel );
-//						initDbPanel.revalidate();
-//						revalidate();
-//					}
-//				} );
-//			jMenuBar.add( mi );
-//		}
+		{
+			var mi = new JMenuItem( "Beolvasó" );
+			mi.addActionListener(
+				new ActionListener() {
+					public void actionPerformed( ActionEvent event ) {
+						setContentPane( beolvasoPanel );
+						exportPanel.revalidate();
+						revalidate();
+					}
+				} );
+			jMenuBar.add( mi );
+		}
+
+		//		{
+		//			var mi = new JMenuItem( "InitDb" );
+		//			mi.addActionListener(
+		//				new ActionListener() {
+		//					public void actionPerformed( ActionEvent event ) {
+		//						setContentPane( initDbPanel );
+		//						initDbPanel.revalidate();
+		//						revalidate();
+		//					}
+		//				} );
+		//			jMenuBar.add( mi );
+		//		}
 
 		setVisible( true );
 	}
