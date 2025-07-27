@@ -17,7 +17,7 @@ import java.util.stream.Stream.Builder;
  *
  */
 public class ArrayDataModelFormatter {
-	private static final String								_NULL_							= "[n]";
+	private String														_NULL_							= "[n]";
 	private static final String								YYYY_MM_DD_HH_MM_SS	= "yyyy.MM.dd HH:mm:ss";
 	private ArrayDataModell										arrayDataModell;
 	private boolean														sorszamozas;
@@ -383,9 +383,14 @@ public class ArrayDataModelFormatter {
 		this.bottomSeparator = bottomSeparator;
 		return this;
 	}
-	
+
 	public ArrayDataModelFormatter setTizedesjel( String tizedesjel ) {
 		this.tizedesjel = tizedesjel;
+		return this;
+	}
+	
+	public ArrayDataModelFormatter setNULL( String _NULL_ ) {
+		this._NULL_ = _NULL_;
 		return this;
 	}
 
