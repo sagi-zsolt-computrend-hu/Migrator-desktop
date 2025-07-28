@@ -29,7 +29,12 @@ public class SelectModell extends ArrayDataModell{
 		if (!rowList.isEmpty()) {
 			rowList.get( 0 ).keySet().forEach( e->addHeader( e ) );
 			rowList.forEach( r->{
-				r.values().forEach(e->add( e ) );
+				r.values().forEach(e->{
+					if (e instanceof String s)
+						add( s.replaceAll("[\\t\\n\\r]", " ") );
+					else
+						add( e );
+				} );
 			} );
 		}
 		

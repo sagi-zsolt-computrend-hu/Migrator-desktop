@@ -50,8 +50,6 @@ public class ExportStep implements Converters, Runnable {
 //				var reader = new InputStreamReader( inputStream, StandardCharsets.UTF_8 )) {
 //				intezmenyProperties.load( reader );
 //			}
-
-			
 			final var jdbcTemplate = new JdbcTemplate( derbyDataSourceConfiguration.dataSource() );
 			final var selectModell = new SelectModell( jdbcTemplate, stepRecord.sql() ).select( stepRecord.params() );
 			final var arrayDataModelFormatter = new ArrayDataModelFormatter( selectModell ).setTizedesjel( "." ).setNULL( "" );

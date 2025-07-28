@@ -65,46 +65,54 @@ public class ExportServiceImpl implements Converters {
 
 		exp( exector, new StepRecord( "fokonyvi_szamok", """
 			SELECT SZAMLASZAM ,MEGNEVEZES ,TELJESITES FROM APP.MK_FOKONYV WHERE EV = ? 
+			 ORDER BY SZAMLASZAM
 				""", exportProperties.get( "EV" ) ) );
-
+//  felülvizsgálni
 		exp( exector, new StepRecord( "szerv_csop", """
 			SELECT SZERV_CSOPORT_KOD,SZERV_CSOPORT_NEVE, FAJTA  
-			 FROM APP.MK_SZERVEZETICSOPORTOK WHERE SZERV_CSOPORT_KOD NOT LIKE 'AEEK_%' ORDER BY SZERV_CSOPORT_KOD
+			 FROM APP.MK_SZERVEZETICSOPORTOK WHERE SZERV_CSOPORT_KOD NOT LIKE 'AEEK_%'
+			  ORDER BY SZERV_CSOPORT_KOD
 				""" ) );
-
+//  felülvizsgálni  WHERE ? BETWEEN MK_SZCSOPOK_SZERVEZETEK.ERV_KEZD AND MK_SZCSOPOK_SZERVEZETEK.ERV_VEGE
 		exp( exector, new StepRecord( "szerv_csop_ossz", """
-		SELECT SZERV_CSOPORT_KOD,SZERV_EGYSEG_KOD,ERV_KEZD,ERV_VEGE  FROM APP.MK_SZCSOPOK_SZERVEZETEK 
-		 WHERE ? BETWEEN MK_SZCSOPOK_SZERVEZETEK.ERV_KEZD AND MK_SZCSOPOK_SZERVEZETEK.ERV_VEGE
-				""", exportProperties.get( "EV" ) + "01" ) );
+		SELECT * FROM APP.MK_SZCSOPOK_SZERVEZETEK 
+		 WHERE ERV_KEZD like ? 
+		 ORDER BY SZERV_CSOPORT_KOD,SZERV_EGYSEG_KOD,ERV_KEZD,ERV_VEGE
+				""", exportProperties.get( "EV" ) + "%" ) );
 		
 		exp( exector, new StepRecord( "szervezeti_finanszirozasi_kodok", """
-			SELECT DISTINCT SZERV_EGYSEG_KOD,OEP_KOD  FROM APP.MK_SZERVEZETI_OEPKODOK WHERE EV IN (?)
+			SELECT * FROM APP.MK_SZERVEZETI_OEPKODOK WHERE EV IN (?)
+			ORDER BY HONAP,SZERV_EGYSEG_KOD,OEP_KOD 
 				""", exportProperties.get( "EV" ) ) );
 
 		exp( exector, new StepRecord( "szervezeti_fokonyviszamok", """
-				SELECT * FROM APP.MK_SZERVEZETI_FOKONYVISZAMOK
-				 WHERE (EV IN (?)) AND (HONAP IN ('01')) 
+				SELECT * FROM APP.MK_SZERVEZETI_FOKONYVISZAMOK WHERE (EV IN (?)) 
+				 ORDER BY HONAP,SZERV_EGYSEG_KOD,FOKONYVI_SZAM,TIPUS
 				""", exportProperties.get( "EV" ) ) );
 		
 		exp( exector, new StepRecord( "szervezeti_fokonyviszamok_masodlagos", """
 		SELECT * FROM APP.MK_SZERVEZET_REND_FK WHERE EV IN (?) 
+		 ORDER BY HONAP,SZERV_EGYSEG_KOD,FKSZAM,TIPUS
 			""", exportProperties.get( "EV" ) ) );
 		
 		exp( exector, new StepRecord( "szervezeti_torzs", """
-		SELECT EV  ,HONAP,OSZTAS_TIPUS,KISSZEM_SZAMA,MSZSZ_TIPUS,HONAP,HAVI_ORA,RAKT_ID,KRON_TIPUS,EGYEB_SZAMA,KOZP_OSZTHAT,FOKONYVI_SZAM_DARAB,FIX_AR,TIPUS,MUKODO_AGYAK,HETI_ORA,KULSO_SZOLG,SZERV_EGYSEG_KOD,ELLATASI_TERULET,FAJTA,SZERZODOTT_AGYAK,ORVOSOK_SZAMA,BELSO_KOD,BEVETELI_FOKONYVI_SZAM_DARAB,KRON_SZORZO,SZERV_EGYSEG_NEVE,SZAKDOLGOZOK_SZAMA,BEV_OSZTAS_TIPUS,'' AS FIN_KOD
-		 FROM APP.MK_SZERVEZETTORZS WHERE EV IN (?)
+		SELECT * FROM APP.MK_SZERVEZETTORZS WHERE EV IN (?)
+		 ORDER BY HONAP,SZERV_EGYSEG_KOD,TIPUS
 			""", exportProperties.get( "EV" ) ) );
 
 		exp( exector, new StepRecord( "afa", """
-			SELECT AFA_SZAZALEK,FKSZAM FOKONYVI_SZAM FROM APP.MK_AFA_BEALLIT WHERE EV IN (?)
+			SELECT * FROM APP.MK_AFA_BEALLIT WHERE EV IN (?)
+			 ORDER BY HONAP,FKSZAM,AFA_SZAZALEK
 			""", exportProperties.get( "EV" ) ) );
 		
 		exp( exector, new StepRecord( "aradat_torzs", """
-			SELECT * FROM APP.MK_ARTORZS ORDER BY ev,honap
-			""" ) );
+			SELECT * FROM APP.MK_ARTORZS WHERE EV IN (?) 
+			 ORDER BY ev,honap
+			""", exportProperties.get( "EV" ) ) );
 		
 		exp( exector, new StepRecord( "koltseg_arsema", """
 			SELECT * FROM APP.MK_ARKATA WHERE VONEV IN (?)
+			 ORDER BY SEMAKOD,SZERV_EGYS_KOD
 			""" , exportProperties.get( "EV" )) );
 
 		exp( exector, new StepRecord( "mennyisegi_egyseg", """
