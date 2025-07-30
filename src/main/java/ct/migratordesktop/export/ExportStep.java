@@ -59,7 +59,7 @@ public class ExportStep implements Converters, Runnable {
 				.setHeaderCompress( false ).setBottomSeparator( false );
 
 			stepPath = Paths.get( this.path.toString(), stepRecord.fileName().toLowerCase( Locale.ROOT ) + ".txt" );
-			Files.write( Paths.get( stepPath.toString() ), arrayDataModelFormatter.getFormatted().getBytes( StandardCharsets.UTF_8 ),
+			Files.write( Paths.get( stepPath.toString() ), arrayDataModelFormatter.getFormatted().trim().getBytes( StandardCharsets.UTF_8 ),
 				StandardOpenOption.TRUNCATE_EXISTING,
 				StandardOpenOption.CREATE,
 				StandardOpenOption.WRITE );

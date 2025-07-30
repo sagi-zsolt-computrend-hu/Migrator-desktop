@@ -43,19 +43,7 @@ public class ExportServiceImpl implements Converters {
 		catch ( Exception e ) {
 			log.error( "Error", e );
 		}
-
 		final var exector = Executors.newFixedThreadPool( 1 );
-//		exp( exector, new StepRecord( "ECOSTAT_COLUMS", """
-//			select * From ECOSTAT_COLUMS
-//						""" ) );
-
-//		exp( exector, new StepRecord( "ECOSTAT_PRIMARY_KEYS", """
-//			select * From ECOSTAT_PRIMARY_KEYS
-//						""" ) );
-
-//		exp( exector, new StepRecord( "MK_PARAMETEREK", """
-//			select * From MK_PARAMETEREK
-//						""" ) );
 
 		exp( exector, new StepRecord( "aradat_torzs",
 			"""
@@ -64,22 +52,20 @@ public class ExportServiceImpl implements Converters {
 						""" ) );
 
 		exp( exector, new StepRecord( "fokonyvi_szamok", """
-			SELECT SZAMLASZAM ,MEGNEVEZES ,TELJESITES FROM APP.MK_FOKONYV WHERE EV = ? 
+			SELECT * FROM APP.MK_FOKONYV WHERE EV = ? 
 			 ORDER BY SZAMLASZAM
 				""", exportProperties.get( "EV" ) ) );
-//  felülvizsgálni
+//  felülvizsgálni ezt az aeek  ??
 		exp( exector, new StepRecord( "szerv_csop", """
-			SELECT SZERV_CSOPORT_KOD,SZERV_CSOPORT_NEVE, FAJTA  
-			 FROM APP.MK_SZERVEZETICSOPORTOK WHERE SZERV_CSOPORT_KOD NOT LIKE 'AEEK_%'
+			SELECT * FROM APP.MK_SZERVEZETICSOPORTOK WHERE SZERV_CSOPORT_KOD NOT LIKE 'xAEEK_%'
 			  ORDER BY SZERV_CSOPORT_KOD
 				""" ) );
-//  felülvizsgálni  WHERE ? BETWEEN MK_SZCSOPOK_SZERVEZETEK.ERV_KEZD AND MK_SZCSOPOK_SZERVEZETEK.ERV_VEGE
+
 		exp( exector, new StepRecord( "szerv_csop_ossz", """
-		SELECT * FROM APP.MK_SZCSOPOK_SZERVEZETEK 
-		 WHERE ERV_KEZD like ? 
+		SELECT * FROM APP.MK_SZCSOPOK_SZERVEZETEK WHERE ERV_KEZD like ? 
 		 ORDER BY SZERV_CSOPORT_KOD,SZERV_EGYSEG_KOD,ERV_KEZD,ERV_VEGE
 				""", exportProperties.get( "EV" ) + "%" ) );
-		
+
 		exp( exector, new StepRecord( "szervezeti_finanszirozasi_kodok", """
 			SELECT * FROM APP.MK_SZERVEZETI_OEPKODOK WHERE EV IN (?)
 			ORDER BY HONAP,SZERV_EGYSEG_KOD,OEP_KOD 
@@ -120,7 +106,6 @@ public class ExportServiceImpl implements Converters {
 			 ORDER BY n.ev,n.KOD
 			""" ));
 
-
 		exector.shutdown();
 		exector.awaitTermination( 100, TimeUnit.HOURS );
 	}
@@ -136,3 +121,15 @@ public class ExportServiceImpl implements Converters {
 	}
 
 }
+
+//		exp( exector, new StepRecord( "ECOSTAT_COLUMS", """
+//			select * From ECOSTAT_COLUMS
+//						""" ) );
+
+//		exp( exector, new StepRecord( "ECOSTAT_PRIMARY_KEYS", """
+//			select * From ECOSTAT_PRIMARY_KEYS
+//						""" ) );
+
+//		exp( exector, new StepRecord( "MK_PARAMETEREK", """
+//			select * From MK_PARAMETEREK
+//						""" ) );
