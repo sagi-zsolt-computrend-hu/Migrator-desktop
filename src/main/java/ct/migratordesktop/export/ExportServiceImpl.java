@@ -106,6 +106,15 @@ public class ExportServiceImpl implements Converters {
 			 ORDER BY n.ev,n.KOD
 			""" ));
 
+		exp( exector, new StepRecord( "SZERVEZET_REND2", """
+			SELECT * FROM APP.MK_SZERVEZET_REND2 WHERE EV IN (?)
+			""" , exportProperties.get( "EV" )) );
+
+		exp( exector, new StepRecord( "SZERVEZET_RENDEL", """
+			SELECT * FROM APP.MK_SZERVEZET_RENDEL WHERE EV IN (?)
+			""" , exportProperties.get( "EV" )) );
+		
+		
 		exector.shutdown();
 		exector.awaitTermination( 100, TimeUnit.HOURS );
 	}
