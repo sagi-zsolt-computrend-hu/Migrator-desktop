@@ -114,6 +114,9 @@ public class ExportServiceImpl implements Converters {
 			SELECT * FROM APP.MK_SZERVEZET_RENDEL WHERE EV IN (?)
 			""" , exportProperties.get( "EV" )) );
 		
+		exp( exector, new StepRecord( "NEAK_SZERZODOTTEK", """
+			SELECT * FROM APP.MK_OEPKOD_TORZS WHERE EV IN (?)
+			""" , exportProperties.get( "EV" )) );
 		
 		exector.shutdown();
 		exector.awaitTermination( 100, TimeUnit.HOURS );
