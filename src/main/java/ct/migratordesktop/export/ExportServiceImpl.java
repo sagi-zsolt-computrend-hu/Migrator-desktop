@@ -118,6 +118,18 @@ public class ExportServiceImpl implements Converters {
 			SELECT * FROM APP.MK_OEPKOD_TORZS WHERE EV IN (?)
 			""" , exportProperties.get( "EV" )) );
 		
+		exp( exector, new StepRecord( "MK_FELDOLG_INPUT", """
+			SELECT * FROM APP.MK_FELDOLG_INPUT 
+			""" ) );
+
+		exp( exector, new StepRecord( "MK_PARAMETEREK", """
+			SELECT * FROM APP.MK_PARAMETEREK 
+			""" ) );
+
+		exp( exector, new StepRecord( "KISZOLG_EGYS_VET_ALAP", """
+			SELECT * FROM APP.MK_VETALAP WHERE EV IN (?)
+			""" , exportProperties.get( "EV" )) );
+		
 		exector.shutdown();
 		exector.awaitTermination( 100, TimeUnit.HOURS );
 	}
