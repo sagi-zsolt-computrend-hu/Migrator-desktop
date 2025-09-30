@@ -20,7 +20,7 @@
 <!-- 	<logger name="com.zaxxer.hikari.pool.ProxyConnection" level="ERROR"></logger> -->
 
 	<!-- [TRACE]-[DEBUG]-[INFO]-[WARN]-[ERROR] (OFF) -->
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="STDOUT"/><!-- level="DEBUG" -->
 	</root>
 </configuration>

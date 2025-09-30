@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "derby")
 public class DerbyProperties {
 	private int			pageSize						= 50000;
-	private String	derbyColumnsWhere	= "TABLE_NAME like 'MK_%'";
+	private String	derbyColumnsWhere	= "TABLE_NAME like 'MK_%' or TABLE_NAME in ('F_NAPLO')";
 	private int			stepThreads							= 2;
 	private int			subStepThreads					= 4;
 }

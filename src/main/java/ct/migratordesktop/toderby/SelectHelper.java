@@ -1,11 +1,17 @@
 package ct.migratordesktop.toderby;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import lombok.Setter;
 
 class SelectHelper {
+
+	public SelectHelper() {
+		System.out.println();
+		tableWhereMap.put("mk_fokonyv", " WHERE EV = 2023 ");
+	}
 
 	@Setter
 	private String	tableName;
@@ -17,12 +23,14 @@ class SelectHelper {
 	private int			pageSize	= 10000;
 	@Setter
 	private String	orderBy		= " ROWID ";
+	
+	private HashMap<String, String> tableWhereMap = new HashMap<>(); 
 
 	private String	selectSql	= "SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT ×columns× FROM ×tableName× ORDER BY ×orderBy× ) a " +
 		"  WHERE rownum < ×p_1× " +
 		") WHERE r__ >= ×p_2× ";
 	private int			pageCount;
-
+//WHERE date_column BETWEEN TO_DATE('2023-01-01', 'YYYY-MM-DD') AND TO_DATE('2023-12-31', 'YYYY-MM-DD');
 	public List<String> getSelectList() {
 		final var ret = new ArrayList<String>();
 		if ( rowCount < pageSize )
