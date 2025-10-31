@@ -126,17 +126,17 @@ public class ExportServiceImpl implements Converters {
 			SELECT * FROM APP.MK_PARAMETEREK 
 			""" ) );
 
-		exp( exector, new StepRecord( "KISZOLG_EGYS_VET_ALAP", """
-			SELECT * FROM APP.MK_VETALAP WHERE EV IN (?)
-			""" , exportProperties.get( "EV" )) );
+//		exp( exector, new StepRecord( "KISZOLG_EGYS_VET_ALAP", """
+//			SELECT * FROM APP.MK_VETALAP WHERE EV IN (?)
+//			""" , exportProperties.get( "EV" )) );
 		
-		exp( exector, new StepRecord( "FOKONYV_NAPLO", """
-			SELECT * FROM APP.MK_NAPLO WHERE YEAR(DATUM) = ? and MONTH(DATUM) = 9
-			""" , exportProperties.get( "EV" )) );
+//		exp( exector, new StepRecord( "FOKONYV_NAPLO", """
+//			SELECT * FROM APP.MK_NAPLO WHERE YEAR(DATUM) = ? and MONTH(DATUM) = 9
+//			""" , exportProperties.get( "EV" )) );
 		
-		exp( exector, new StepRecord( "F_NAPLO", """
-			SELECT * FROM APP.F_NAPLO 
-			""" ) );
+//		exp( exector, new StepRecord( "F_NAPLO", """
+//			SELECT * FROM APP.F_NAPLO 
+//			""" ) );
 		exector.shutdown();
 		exector.awaitTermination( 100, TimeUnit.HOURS );
 	}
